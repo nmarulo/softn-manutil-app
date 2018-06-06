@@ -1,0 +1,26 @@
+{
+    "name": "softn-manutil-app",
+    "version": "0.0.1-alpha",
+    "description": "Utilidades para la creación de ficheros a partir de plantillas",
+    "main": "index.js",
+    "scripts": {
+        "start": "electron main.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/nmarulo/softn-manutil-app.git"
+    },
+    "keywords": [
+        "electron",
+        "utilities"
+    ],
+    "author": "Nicolás Marulanda P.",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/nmarulo/softn-manutil-app/issues"
+    },
+    "homepage": "https://github.com/nmarulo/softn-manutil-app#readme",
+    "dependencies": {
+        "electron": "^2.0.2"
+    }
+}

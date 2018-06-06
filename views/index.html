@@ -19,20 +19,29 @@
             <div class="mb-auto cover">
                 <main role="main" class="mx-auto cover-container p-3 clearfix">
                     <h1>Crear ficheros</h1>
-                    <form id="form-create-files" class="" novalidate>
+                    <form id="form-create-files">
                         <div class="form-group">
-                            <label for="form-input-file-properties">Seleccionar fichero ".properties"</label>
-                            <input id="form-input-file-properties" class="form-control" type="file">
+                            <label for="form-input-file-jar">Ruta del fichero ".jar"</label>
+                            <input id="form-input-file-jar" class="form-control" type="text"
+                                   name="form_input_file_jar" placeholder="C:\manutil-cli\manutil.jar" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="form-input-file-properties">Ruta del fichero ".properties"</label>
+                            <input id="form-input-file-properties" class="form-control" type="text"
+                                   name="form_input_file_properties" placeholder="C:\manutil-cli\master.properties"
+                                   required>
                         </div>
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-sm-6">
                                     <label for="form-input-name-class">Nombre de la clase:</label>
-                                    <input id="form-input-name-class" class="form-control" type="text">
+                                    <input id="form-input-name-class" class="form-control" type="text"
+                                           name="form_input_name_class" placeholder="MyNameClass" required>
                                 </div>
                                 <div class="col-sm-6">
                                     <label for="form-input-name-module">Nombre del modulo (opcional):</label>
-                                    <input id="form-input-name-module" class="form-control" type="text">
+                                    <input id="form-input-name-module" class="form-control" type="text"
+                                           name="form_input_name_module" placeholder="name-directory-module">
                                 </div>
                             </div>
                         </div>
@@ -52,8 +61,31 @@
                 </footer>
             </div>
         </div>
+        <div class="modal fade" id="modal-information-console-java" tabindex="-1" role="dialog"
+             aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Información</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-dark" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Optional JavaScript -->
-        <script src="js/jquery-3.3.1.js"></script>
+        <script>
+            const {exec} = require('child_process');
+            window.$ = window.jQuery = require('./js/jquery-3.3.1.js');
+        </script>
+        <!--<script src="js/jquery-3.3.1.js"></script>-->
         <script src="js/bootstrap.js"></script>
+        <script src="js/script.js"></script>
     </body>
 </html>

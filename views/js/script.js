@@ -4,7 +4,7 @@ let gstdout;
     $('#form-create-files').on('submit', function (event) {
         event.preventDefault();
         let fileJar = $(this).find('#form-input-file-jar').val();
-        let fileProperties = $(this).find('#form-input-file-jar').val();
+        let fileProperties = $(this).find('#form-input-file-properties').val();
         let fileNameClass = $(this).find('#form-input-name-class').val();
         let directoryNameModule = $(this).find('#form-input-name-module').val();
         let cli = 'java -jar ' + fileJar + ' -p ' + fileProperties + ' -c ' + fileNameClass;

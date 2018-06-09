@@ -2,7 +2,6 @@ const electron = require('electron');
 const {app, BrowserWindow} = electron;
 const path = require('path');
 const url = require('url');
-
 let window;
 
 function initWindow() {
@@ -12,9 +11,6 @@ function initWindow() {
         protocol: 'file',
         slashes: true
     }));
-    window.on('closed', () => {
-        window = null;
-    });
     // Quit when all windows are closed and no other one is listening to this.
     app.on('window-all-closed', () => {
         if (app.listeners('window-all-closed').length === 1) {
@@ -25,4 +21,4 @@ function initWindow() {
     // window.webContents.openDevTools();
 }
 
-app.on('ready', initWindow)
+app.on('ready', initWindow);

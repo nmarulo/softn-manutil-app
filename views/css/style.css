@@ -133,3 +133,8 @@ body {
 .container-100 {
     width: 100%;
 }
+
+.custom-pre {
+    color: #fff;
+    white-space: pre-line;
+}

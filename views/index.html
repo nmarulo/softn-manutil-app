@@ -19,17 +19,23 @@
             <div class="mb-auto cover">
                 <main role="main" class="mx-auto cover-container p-3 clearfix">
                     <h1>Crear ficheros</h1>
-                    <form id="form-create-files">
-                        <div class="form-group">
+                    <form id="form-create-files" novalidate>
+                        <div class="form-group position-relative d-none">
                             <label for="form-input-file-jar">Ruta del fichero ".jar"</label>
-                            <input id="form-input-file-jar" class="form-control" type="text"
+                            <input id="form-input-file-jar" class="form-control" type="hidden"
                                    name="form_input_file_jar" placeholder="C:\manutil-cli\manutil.jar" required>
+                            <div class="invalid-tooltip">
+                                Este campo es requerido.
+                            </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group position-relative d-none">
                             <label for="form-input-file-properties">Ruta del fichero ".properties"</label>
-                            <input id="form-input-file-properties" class="form-control" type="text"
+                            <input id="form-input-file-properties" class="form-control" type="hidden"
                                    name="form_input_file_properties" placeholder="C:\manutil-cli\master.properties"
                                    required>
+                            <div class="invalid-tooltip">
+                                Este campo es requerido.
+                            </div>
                         </div>
                         <div class="form-group">
                             <div class="row">
@@ -37,6 +43,9 @@
                                     <label for="form-input-name-class">Nombre de la clase:</label>
                                     <input id="form-input-name-class" class="form-control" type="text"
                                            name="form_input_name_class" placeholder="MyNameClass" required>
+                                    <div class="invalid-tooltip">
+                                        Este campo es requerido.
+                                    </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <label for="form-input-name-module">Nombre del modulo (opcional):</label>
@@ -53,10 +62,9 @@
                 <footer class="mx-auto cover-container p-3 clearfix">
                     <div class="clearfix">
                         <p class="float-left">
-                            <a href="https://github.com/nmarulo/softn-manutil-app"
-                               target="_blank">github.com/nmarulo</a>
+                            https://github.com/nmarulo/softn-manutil-app
                         </p>
-                        <p class="float-right">v0.1-alpha</p>
+                        <p class="float-right">v0.1.0</p>
                     </div>
                 </footer>
             </div>
@@ -72,6 +80,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
+                        <pre class="custom-pre"></pre>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-dark" data-dismiss="modal">Cerrar</button>
@@ -79,13 +88,23 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="modal-file-jar-properties" tabindex="-1" role="dialog"
+             aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <p>No se encontraron los ficheros <code>.jar</code> y <code>.properties</code>.</p>
+                        <p>Establezca sus rutas manualmente.</p>
+                        <div class="d-flex justify-content-center">
+                            <button type="button" class="btn btn-dark" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Optional JavaScript -->
-        <script>
-            const {exec} = require('child_process');
-            window.$ = window.jQuery = require('./js/jquery-3.3.1.js');
-        </script>
-        <!--<script src="js/jquery-3.3.1.js"></script>-->
+        <script>window.$ = window.jQuery = require('./js/jquery-3.3.1.js');</script>
         <script src="js/bootstrap.js"></script>
-        <script src="js/script.js"></script>
+        <script>require('./js/script.js');</script>
     </body>
 </html>

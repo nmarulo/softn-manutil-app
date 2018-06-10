@@ -40,17 +40,21 @@
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-sm-6">
-                                    <label for="form-input-name-class">Nombre de la clase:</label>
-                                    <input id="form-input-name-class" class="form-control" type="text"
-                                           name="form_input_name_class" placeholder="MyNameClass" required>
-                                    <div class="invalid-tooltip">
-                                        Este campo es requerido.
+                                    <div class="position-relative">
+                                        <label for="form-input-name-class">Nombre de la clase:</label>
+                                        <input id="form-input-name-class" class="form-control" type="text"
+                                               name="form_input_name_class" placeholder="MyNameClass" required>
+                                        <div class="invalid-tooltip">
+                                            Este campo es requerido.
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
-                                    <label for="form-input-name-module">Nombre del modulo (opcional):</label>
-                                    <input id="form-input-name-module" class="form-control" type="text"
-                                           name="form_input_name_module" placeholder="name-directory-module">
+                                    <label for="form-input-name-module">Seleccione el/los modulo(s) (opcional):</label>
+                                    <select id="form-input-name-module" class="custom-select"
+                                            name="form_input_name_module" multiple>
+                                        <option value="" selected>Todos</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -69,27 +73,26 @@
                 </footer>
             </div>
         </div>
-        <div class="modal fade" id="modal-information-console-java" tabindex="-1" role="dialog"
-             aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="modal-information" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Información</h5>
+                        <h5 class="modal-title">Información</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
                         <pre class="custom-pre"></pre>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-dark" data-dismiss="modal">Cerrar</button>
+                        <div class="d-flex justify-content-center">
+                            <button type="button" class="btn btn-dark" data-dismiss="modal">Cerrar</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="modal fade" id="modal-file-jar-properties" tabindex="-1" role="dialog"
-             aria-labelledby="exampleModalLabel" aria-hidden="true">
+             aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-body">

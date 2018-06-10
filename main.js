@@ -5,7 +5,7 @@ const url = require('url');
 let window;
 
 function initWindow() {
-    window = new BrowserWindow({width: 800, height: 600});
+    window = new BrowserWindow({width: 1024, height: 800});
     window.loadURL(url.format({
         pathname: path.join(__dirname, 'views/index.html'),
         protocol: 'file',
@@ -17,8 +17,6 @@ function initWindow() {
             app.quit()
         }
     });
-
-    // window.webContents.openDevTools();
 }
 
 app.on('ready', initWindow);

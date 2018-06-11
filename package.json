@@ -1,6 +1,6 @@
 {
     "name": "softn-manutil-app",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Utilidades para la creación de ficheros a partir de plantillas",
     "main": "main.js",
     "scripts": {

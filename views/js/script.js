@@ -122,9 +122,17 @@ function setSelectNameModule(fileName) {
             .map(key => obj[key])
             .map(value => value.split(separator).shift())
             .forEach(value => {
-                elementInputNameModule.append('<option>' + value + '</option>');
+                if (!someValueNameModule(value)) {
+                    elementInputNameModule.append('<option>' + value + '</option>');
+                }
             });
     });
+}
+
+function someValueNameModule(option) {
+    return $.makeArray(elementInputNameModule.find('option'))
+        .map(value => value.innerText)
+        .some(value => value === option);
 }
 
 function modalInformation(message) {

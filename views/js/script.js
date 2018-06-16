@@ -6,21 +6,27 @@ const KEY_PROJECT_MODULE_FORMAT_SEPARATOR = 'project.module.format.separator';
 
 let fileJar = '';
 let fileProperties = '';
-let maxDirSearch = 5;
+let maxDirSearch;
+let maxDirSearchJSON;
 let elementInputFileJar;
 let elementInputFileProperties;
 let elementInputNameModule;
+let elementProjectVersion;
 
 (function () {
     initVars();
-    initEvents()
+    initEvents();
     setPathJarProperties(__dirname);
+    getVersion(__dirname);
 })();
 
 function initVars() {
     elementInputFileJar = $('#form-input-file-jar');
     elementInputFileProperties = $('#form-input-file-properties');
     elementInputNameModule = $('#form-input-name-module');
+    elementProjectVersion = document.getElementById('project-version');
+    maxDirSearchJSON = 5;
+    maxDirSearch = 5;
 }
 
 function initEvents() {
@@ -103,8 +109,13 @@ function setPathJarProperties(path) {
 }
 
 function getFileNameByExt(files, search) {
-    return files.filter(file => search === file.split('.').pop())
-        .toString();
+    let filter = files.filter(file => search === file.split('.').pop());
+
+    if(filter.length > 0){
+        return filter.shift();
+    }
+
+    return '';
 }
 
 function setSelectNameModule(fileName) {
@@ -138,4 +149,38 @@ function someValueNameModule(option) {
 function modalInformation(message) {
     $('#modal-information .modal-body .custom-pre').text(message);
     $('#modal-information').modal('show');
+}
+
+function getVersion(path) {
+    if (maxDirSearch === 0) {
+        return;
+    }
+
+    fs.readdir(path, (err, files) => {
+        --maxDirSearch;
+
+        if (err) {
+            return;
+        }
+
+        let fileJSONFilter = files.filter(value => value === 'package.json').toString();
+
+        if (fileJSONFilter.length === 0) {
+            getVersion(path + '/..');
+        } else {
+            fs.readFile(path + '/' + fileJSONFilter, 'utf8', (error, data) => {
+                if (error) {
+                    modalInformation("Error al obtener la versión de la app.");
+
+                    return;
+                }
+
+                elementProjectVersion.innerText = 'v' + JSON.parse(data).version;
+            });
+        }
+
+        if (maxDirSearch > 1) {
+            return;
+        }
+    });
 }

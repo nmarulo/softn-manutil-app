@@ -1,7 +1,11 @@
 var inputProjectModules;
+var formAddModule;
+var navAddModuleData;
 
 (function () {
+    formAddModule = $(document).find('#modal-form-add-module');
     inputProjectModules = $(document).find('#input-project-modules');
+    navAddModuleData = $(document).find('#nav-add-module-data');
     $(document).on('click', '#modal-btn-add', function () {
         btnAddFormAddModule();
     });
@@ -12,15 +16,23 @@ var inputProjectModules;
         $(this).closest('.form-group').remove();
     });
     $(document).on('click', '#modal-btn-replace-add', function () {
-        var elementNav = $(document).find('#nav-add-module-data');
-        var lastInput = elementNav.find('.form-group > input[type=hidden]:last');
+        var lastInput = navAddModuleData.find('.form-group > input[type=hidden]:last');
         var pos = 1;
 
         if (lastInput.length === 1) {
             pos = parseInt(lastInput.val()) + 1;
         }
 
-        elementNav.append(getTemplateReplaceHtml(pos));
+        navAddModuleData.append(getTemplateReplaceHtml(pos));
+    });
+    $('#modal-add-module').on('show.bs.modal', function () {
+        formAddModule.get(0).reset();
+        navAddModuleData.find('.form-group').each(function () {
+            if ($(this).find('input[type=hidden]').length > 0) {
+                $(this).remove();
+            }
+        });
+        $('a[href*=nav-add-module-general]').click();
     });
 })();
 
@@ -90,7 +102,7 @@ function getFormAddModuleObj() {
     updateTemplateReplace();
 
     var moduleObj = {};
-    var modalFormSerialize = $(document).find('#modal-form-add-module').serializeArray();
+    var modalFormSerialize = formAddModule.serializeArray();
 
     for (var i = 0, len = modalFormSerialize.length; i < len; i++) {
         var name = modalFormSerialize[i]["name"];
@@ -103,11 +115,10 @@ function getFormAddModuleObj() {
 }
 
 function updateTemplateReplace() {
-    var modalFormAddModule = $(document).find('#modal-form-add-module');
-    var inputTemplateReplace = modalFormAddModule.find('#input-project-classes-template-replace');
+    var inputTemplateReplace = formAddModule.find('#input-project-classes-template-replace');
     var replaceObj = {};
 
-    modalFormAddModule.find('#nav-add-module-data > .form-group').each(function () {
+    navAddModuleData.find('.form-group').each(function () {
         var inputHidden = $(this).find('input[type=hidden]');
         var inputText = $(this).find('input[type=text]');
 

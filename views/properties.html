@@ -18,12 +18,12 @@
             </header>
             <div class="cover">
                 <main role="main" class="mx-auto cover-container p-3 clearfix">
-                    <h1>Editar fichero properties
+                    <h1>Editar configuración
                         <button type="submit" class="btn btn-success">Editar</button>
                     </h1>
                     <!-- TODO: el fichero properties, se establece automáticamente, pero si no lo encuentra (no se mostraran los campos de configuración) se mostrara el input para escribir la ruta manualmente. Despues de escribir la ruta y comprobar que existe, se mostraran los campos de configuración -->
                     <div class="form-group">
-                        <input id="input-file-properties" class="form-control" type="text"
+                        <input id="input-file-properties" class="form-control" type="file"
                                name="input_file_properties" placeholder="C:\softn-manutil-app\master.properties">
                     </div>
                     <form id="form-edit-properties" novalidate>
@@ -43,7 +43,7 @@
                                 <div class="form-group position-relative">
                                     <label for="form-project-directory">Ruta del proyecto</label>
                                     <input id="form-project-directory" class="form-control" type="text"
-                                           name="project_directory" placeholder="C:/directory/my-project" required>
+                                           name="projectDirectory" placeholder="C:/directory/my-project" required>
                                     <div class="invalid-tooltip">
                                         Este campo es requerido.
                                     </div>
@@ -51,9 +51,8 @@
                                 <div class="form-group position-relative">
                                     <label for="form-project-directory-packages">Directorio de los paquetes</label>
                                     <input id="form-project-directory-packages" class="form-control" type="text"
-                                           name="project_directory_packages"
-                                           placeholder="base-packages/package-one/package-t"
-                                           required>
+                                           name="projectDirectoryPackages"
+                                           placeholder="base-packages/package-one/package-t" required>
                                     <div class="invalid-tooltip">
                                         Este campo es requerido.
                                     </div>
@@ -64,7 +63,7 @@
                                             <div class="position-relative">
                                                 <label for="form-project-main-packages">Paquete base</label>
                                                 <input id="form-project-main-packages" class="form-control" type="text"
-                                                       name="project_main_packages" placeholder="red.softn"
+                                                       name="projectMainPackages" placeholder="red.softn"
                                                        required>
                                                 <div class="invalid-tooltip">
                                                     Este campo es requerido.
@@ -75,7 +74,7 @@
                                             <div class="position-relative">
                                                 <label for="form-project-class-type">Tipo de clase general</label>
                                                 <input id="form-project-class-type" class="form-control" type="text"
-                                                       name="project_main_packages" placeholder="java"
+                                                       name="projectClassType" placeholder="java"
                                                        required>
                                                 <div class="invalid-tooltip">
                                                     Este campo es requerido.
@@ -87,8 +86,7 @@
                                                 <label for="form-project-package-separator">Separador de
                                                     paquetes</label>
                                                 <input id="form-project-package-separator" class="form-control"
-                                                       type="text"
-                                                       name="project_main_packages" placeholder="."
+                                                       type="text" name="projectPackageSeparator" placeholder="."
                                                        required>
                                                 <div class="invalid-tooltip">
                                                     Este campo es requerido.
@@ -107,8 +105,7 @@
                                             <div class="position-relative">
                                                 <label for="form-project-module-format-separator">Separador</label>
                                                 <input id="form-project-module-format-separator" class="form-control"
-                                                       type="text"
-                                                       name="project_main_packages" placeholder=":"
+                                                       type="text" name="projectModuleFormatSeparator" placeholder=":"
                                                        required>
                                                 <div class="invalid-tooltip">
                                                     Este campo es requerido.
@@ -120,10 +117,9 @@
                                                 <label for="form-project-module-format-position-directory">Posición del
                                                     directorio</label>
                                                 <input id="form-project-module-format-position-directory"
-                                                       class="form-control"
-                                                       type="text"
-                                                       name="project_main_packages" placeholder="0"
-                                                       required>
+                                                       class="form-control" type="text"
+                                                       name="projectModuleFormatPositionDirectory"
+                                                       placeholder="0" required>
                                                 <div class="invalid-tooltip">
                                                     Este campo es requerido.
                                                 </div>
@@ -134,10 +130,9 @@
                                                 <label for="form-project-module-format-position-package">Posición del
                                                     paquete</label>
                                                 <input id="form-project-module-format-position-package"
-                                                       class="form-control"
-                                                       type="text"
-                                                       name="project_main_packages" placeholder="1"
-                                                       required>
+                                                       class="form-control" type="text"
+                                                       name="projectModuleFormatPositionPackage"
+                                                       placeholder="1" required>
                                                 <div class="invalid-tooltip">
                                                     Este campo es requerido.
                                                 </div>
@@ -147,7 +142,7 @@
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="nav-modules" role="tabpanel">
-                                <!-- TODO: botón para agregar nuevo modulo -->
+                                <input id="input-project-modules" type="hidden" name="projectModules"/>
                                 <div class="form-group">
                                     <button id="btn-add-module" class="btn btn-primary" type="button"
                                             data-toggle="modal" data-target="#modal-add-module">
@@ -170,24 +165,6 @@
                                                     <!-- TODO: al pulsar, abre una ventana modal donde se puede editar o borrar -->
                                                     <a href="#" class="text-primary" data-id="0">package.a</a>
                                                 </li>
-                                                <li>package.b</li>
-                                                <li>package.c</li>
-                                                <li>package.d</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="list-group-item d-flex justify-content-between align-items-center">
-                                        <button class="btn btn-link" type="button" data-toggle="collapse"
-                                                data-target="#collapseB">
-                                            modulo-b
-                                        </button>
-                                        <span class="badge badge-primary badge-pill">2</span>
-                                    </div>
-                                    <div id="collapseB" class="collapse text-dark"
-                                         data-parent="#container-accordion">
-                                        <div class="bg-white p-3">
-                                            <ul>
-                                                <li>package.a</li>
                                                 <li>package.b</li>
                                                 <li>package.c</li>
                                                 <li>package.d</li>
@@ -217,12 +194,19 @@
                     <div class="modal-header">
                         <h5 class="modal-title">Agregar modulo</h5>
                         <div class="d-flex justify-content-end">
-                            <button type="button" class="btn btn-success mr-3" data-dismiss="modal">Editar</button>
-                            <button type="button" class="btn btn-danger" data-dismiss="modal">Eliminar</button>
+                            <button id="modal-btn-add" type="button" class="btn btn-success mr-3" data-dismiss="modal">
+                                Agregar
+                            </button>
+                            <button id="modal-btn-edit" type="button" class="btn btn-primary mr-3" data-dismiss="modal">
+                                Editar
+                            </button>
+                            <button id="modal-btn-delete" type="button" class="btn btn-danger" data-dismiss="modal">
+                                Eliminar
+                            </button>
                         </div>
                     </div>
                     <div class="modal-body">
-                        <form id="form-add-module">
+                        <form id="modal-form-add-module">
                             <nav>
                                 <div class="nav nav-tabs" id="nav-tab-add-module" role="tablist">
                                     <a class="nav-item nav-link active" data-toggle="tab" href="#nav-add-module-general"
@@ -235,6 +219,7 @@
                             </nav>
                             <br/>
                             <div class="tab-content" id="nav-tab-content-add-module">
+                                <input id="input-project-module-id" type="hidden" name="projectModuleId"/>
                                 <div class="tab-pane fade show active" id="nav-add-module-general" role="tabpanel">
                                     <div class="form-group">
                                         <div class="row">
@@ -242,9 +227,8 @@
                                                 <div class="position-relative">
                                                     <label for="form-project-module-name">Nombre</label>
                                                     <input id="form-project-module-name" class="form-control"
-                                                           type="text"
-                                                           name="project_main_packages" placeholder="module-a"
-                                                           required>
+                                                           type="text" name="projectModuleName"
+                                                           placeholder="module-a" required>
                                                     <div class="invalid-tooltip">
                                                         Este campo es requerido.
                                                     </div>
@@ -255,10 +239,8 @@
                                                     <label for="form-project-class-template-name">Nombre de la
                                                         clase</label>
                                                     <input id="form-project-class-template-name" class="form-control"
-                                                           type="text"
-                                                           name="project_main_packages"
-                                                           placeholder="Red#{className}SoftNModuleA"
-                                                           required>
+                                                           type="text" name="projectClassesTemplateName"
+                                                           placeholder="Red#{className}SoftNModuleA" required>
                                                     <div class="invalid-tooltip">
                                                         Este campo es requerido.
                                                     </div>
@@ -269,7 +251,7 @@
                                     <div class="form-group position-relative">
                                         <label for="form-project-module-package">Paquete</label>
                                         <input id="form-project-module-package" class="form-control" type="text"
-                                               name="project_main_packages" placeholder="package.one.two.t"
+                                               name="projectModulePackage" placeholder="package.one.two.t"
                                                required>
                                         <div class="invalid-tooltip">
                                             Este campo es requerido.
@@ -278,9 +260,8 @@
                                     <div class="form-group position-relative">
                                         <label for="form-project-class-template-path">Ruta de la plantilla</label>
                                         <input id="form-project-class-template-path" class="form-control" type="text"
-                                               name="project_main_packages"
-                                               placeholder="C:/softn-manutil-app/templates/ClassTemplate.txt"
-                                               required>
+                                               name="projectClassesTemplatePath"
+                                               placeholder="C:/softn-manutil-app/templates/ClassTemplate.txt" required>
                                         <div class="invalid-tooltip">
                                             Este campo es requerido.
                                         </div>
@@ -292,52 +273,18 @@
                                             <div class="form-group">
                                                 <label for="form-project-class-template-type">Tipo</label>
                                                 <input id="form-project-class-template-type" class="form-control"
-                                                       type="text"
-                                                       name="project_main_packages" placeholder="java">
+                                                       type="text" name="projectClassesTemplateType" placeholder="java">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="nav-add-module-data" role="tabpanel">
-                                    <!-- TODO: agregar botón para agregar mas datos a reemplazar. -->
+                                    <input id="input-project-classes-template-replace" type="hidden"
+                                           name="projectClassesTemplateReplace"/>
                                     <div class="form-group">
-                                        <button type="button" class="btn btn-primary">Nuevo</button>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="input-group mb-3">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text">%1$s</span>
-                                            </div>
-                                            <input class="form-control" type="text" name="project_main_packages"
-                                                   placeholder="Test001">
-                                            <div class="input-group-append">
-                                                <button class="btn btn-danger" type="button">Eliminar</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="input-group mb-3">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text">%2$s</span>
-                                            </div>
-                                            <input class="form-control" type="text" name="project_main_packages"
-                                                   placeholder="Test002">
-                                            <div class="input-group-append">
-                                                <button class="btn btn-danger" type="button">Eliminar</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="input-group mb-3">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text">%3$s</span>
-                                            </div>
-                                            <input class="form-control" type="text" name="project_main_packages"
-                                                   placeholder="Test003">
-                                            <div class="input-group-append">
-                                                <button class="btn btn-danger" type="button">Eliminar</button>
-                                            </div>
-                                        </div>
+                                        <button id="modal-btn-replace-add" type="button" class="btn btn-primary">
+                                            Nuevo
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -349,11 +296,7 @@
         <!-- Optional JavaScript -->
         <script src="js/jquery-3.3.1.js"></script>
         <script src="js/bootstrap.js"></script>
-        <script type="application/javascript">
-            $(function () {
-
-            })();
-        </script>
+        <script src="js/properties.js"></script>
 
         <!--<script>window.$ = window.jQuery = require('./js/jquery-3.3.1.js');</script>-->
         <!--<script src="js/bootstrap.js"></script>-->

@@ -150,21 +150,6 @@
                                     </button>
                                 </div>
                                 <div id="container-accordion-modules" class="list-group accordion text-dark">
-                                    <div class="list-group-item d-flex justify-content-between align-items-center"
-                                         data-toggle="collapse" data-target="#modulo-a">
-                                        <span class="span-module-name">modulo-a</span>
-                                        <span class="badge badge-primary badge-pill">4</span>
-                                    </div>
-                                    <div id="modulo-a" class="collapse" data-parent="#container-accordion-modules">
-                                        <ul class="list-group list-group-flush">
-                                            <li class="list-group-item">
-                                                <a href="#" data-toggle="modal" data-target="#modal-add-module"
-                                                   class="text-primary" data-project-module-id="0">
-                                                    package.a
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -182,19 +167,23 @@
                 </footer>
             </div>
         </div>
-        <div class="modal fade" id="modal-add-module" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal fade" id="modal-add-module" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="false">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Agregar modulo</h5>
+                        <button type="button" class="btn btn-dark" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true" class="text-secondary font-weight-bold">&times;</span>
+                        </button>
+                        <h5 class="modal-title">Modulo</h5>
                         <div class="d-flex justify-content-end">
-                            <button id="modal-btn-add" type="button" class="btn btn-success mr-3" data-dismiss="modal">
+                            <button id="modal-btn-add" type="button" class="btn btn-success mr-3 d-none">
                                 Agregar
                             </button>
-                            <button id="modal-btn-edit" type="button" class="btn btn-primary mr-3" data-dismiss="modal">
+                            <button id="modal-btn-edit" type="button" class="btn btn-primary mr-3 d-none">
                                 Editar
                             </button>
-                            <button id="modal-btn-delete" type="button" class="btn btn-danger" data-dismiss="modal">
+                            <button id="modal-btn-delete" type="button" class="btn btn-danger d-none"
+                                    data-dismiss="modal">
                                 Eliminar
                             </button>
                         </div>
@@ -290,6 +279,7 @@
         <!-- Optional JavaScript -->
         <script src="js/jquery-3.3.1.js"></script>
         <script src="js/bootstrap.js"></script>
+        <script src="js/common.js"></script>
         <script src="js/properties.js"></script>
 
         <!--<script>window.$ = window.jQuery = require('./js/jquery-3.3.1.js');</script>-->

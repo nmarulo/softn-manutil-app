@@ -3,8 +3,10 @@ var formAddModule;
 var navAddModuleData;
 var inputProjectModuleId;
 var inputTemplateReplace;
+var modalAddModule;
 
 (function () {
+    modalAddModule = $(document).find('#modal-add-module');
     formAddModule = $(document).find('#modal-form-add-module');
     inputProjectModules = $(document).find('#input-project-modules');
     navAddModuleData = $(document).find('#nav-add-module-data');
@@ -12,10 +14,17 @@ var inputTemplateReplace;
     inputTemplateReplace = formAddModule.find('#input-project-classes-template-replace');
 
     $(document).on('click', '#modal-btn-add', function () {
-        btnAddFormAddModule();
+        if (checkFormValidity(formAddModule)) {
+            btnAddFormAddModule();
+            modalAddModule.modal('hide');
+        }
     });
     $(document).on('click', '#modal-btn-edit', function () {
-        btnEditFormAddModule(inputProjectModuleId.val());
+        //TODO: y si se cambia el nombre del modulo, se debe actualizar lista html de módulos.
+        if (checkFormValidity(formAddModule)) {
+            btnEditFormAddModule(inputProjectModuleId.val());
+            modalAddModule.modal('hide');
+        }
     });
     $(document).on('click', '.modal-btn-replace-delete', function () {
         $(this).closest('.form-group').remove();
@@ -28,7 +37,7 @@ var inputTemplateReplace;
             pos = parseInt(lastInput.val()) + 1;
         }
 
-        addModuleDataReplace(pos);
+        appendHtmlTemplateReplace(pos);
     });
     $('#modal-add-module').on('show.bs.modal', function (event) {
         resetFormAddModule();
@@ -41,7 +50,7 @@ var inputTemplateReplace;
     });
 })();
 
-function addModuleDataReplace(pos, callback) {
+function appendHtmlTemplateReplace(pos, callback) {
     var html = getTemplateReplaceHtml(pos);
 
     if (callback !== undefined) {
@@ -65,10 +74,10 @@ function fillFormAddModule(moduleId) {
     inputTemplateReplace.val(templateReplaceStr);
 
     Object.keys(templateReplaceObj).forEach(function (key) {
-        addModuleDataReplace(key, function (html) {
-            var element = $(html);
+        appendHtmlTemplateReplace(key, function (html) {
+            var element = $('<div></div>').append(html);
 
-            element.find('input[type=text]').val(templateReplaceObj[key]);
+            element.find('input[type=text]').attr('value', templateReplaceObj[key]);
 
             return element.html();
         });
@@ -90,7 +99,7 @@ function getModuleObjectById(id) {
 }
 
 function resetFormAddModule() {
-    formAddModule.get(0).reset();
+    resetForm(formAddModule);
     navAddModuleData.find('.form-group').each(function () {
         if ($(this).find('input[type=hidden]').length > 0) {
             $(this).remove();
@@ -117,6 +126,29 @@ function getTemplateReplaceHtml(pos) {
         '</div>';
 }
 
+function getNewModuleHtml(moduleName) {
+    //TODO: mover a una plantilla.
+    return '<div class="list-group-item d-flex justify-content-between align-items-center"\n' +
+        '     data-toggle="collapse" data-target="#' + moduleName + '">\n' +
+        '    <span class="span-module-name">' + moduleName + '</span>\n' +
+        '    <span class="badge badge-primary badge-pill">1</span>\n' +
+        '</div>\n' +
+        '<div id="' + moduleName + '" class="collapse" data-parent="#container-accordion-modules">\n' +
+        '    <ul class="list-group list-group-flush">\n' +
+        '    </ul>\n' +
+        '</div>';
+}
+
+function getNewModulePackageHtml(packageName, moduleId) {
+    //TODO: mover a una plantilla.
+    return '<li class="list-group-item">\n' +
+        '    <a href="#modal-add-module" data-toggle="modal" class="text-primary"\n' +
+        '       data-project-module-id="' + moduleId + '">\n' +
+        '        ' + packageName + '\n' +
+        '    </a>\n' +
+        '</li>';
+}
+
 function btnEditFormAddModule(projectModuleId) {
     var moduleObjects = getModuleObjects();
     var moduleObj = getFormAddModuleObj();
@@ -128,6 +160,7 @@ function btnEditFormAddModule(projectModuleId) {
         }
     }
 
+    updateHtmlModulesList(moduleObjects, moduleObj, false);
     updateProjectModules(moduleObjects);
 }
 
@@ -147,7 +180,38 @@ function btnAddFormAddModule() {
 
     moduleObj["projectModuleId"] = id;
 
+    updateHtmlModulesList(moduleObjects, moduleObj, true);
     updateProjectModules(moduleObjects.concat(moduleObj));
+}
+
+function updateHtmlModulesList(moduleObjects, moduleObj, addNew) {
+    var containerModules = $(document).find('#container-accordion-modules');
+    var moduleName = moduleObj['projectModuleName'];
+    var modulePackage = moduleObj['projectModulePackage'];
+    var moduleId = moduleObj['projectModuleId']
+    var newModule = $('<div></div>').append(getNewModuleHtml(moduleName));
+    var newPackage = getNewModulePackageHtml(modulePackage, moduleId);
+    var exists = false;
+
+    for (var i = 0, len = moduleObjects.length; i < len; i++) {
+        var currentObj = moduleObjects[i];
+
+        if (currentObj['projectModuleName'] == moduleName) {
+            exists = true;
+            break;
+        }
+    }
+
+    if (exists) {
+        if (addNew) {
+            containerModules.find('div[id=' + moduleName + '] > ul.list-group').append(newPackage);
+        } else {
+            containerModules.find('div[id=' + moduleName + '] > ul.list-group > li.list-group-item > a[data-project-module-id=' + moduleId + ']').text(modulePackage);
+        }
+    } else {
+        newModule.find('div > ul.list-group').append(newPackage);
+        $(document).find('#container-accordion-modules').append(newModule.html());
+    }
 }
 
 function getModuleObjects() {

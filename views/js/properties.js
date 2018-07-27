@@ -1,16 +1,21 @@
 var inputProjectModules;
 var formAddModule;
 var navAddModuleData;
+var inputProjectModuleId;
+var inputTemplateReplace;
 
 (function () {
     formAddModule = $(document).find('#modal-form-add-module');
     inputProjectModules = $(document).find('#input-project-modules');
     navAddModuleData = $(document).find('#nav-add-module-data');
+    inputProjectModuleId = formAddModule.find('#input-project-module-id');
+    inputTemplateReplace = formAddModule.find('#input-project-classes-template-replace');
+
     $(document).on('click', '#modal-btn-add', function () {
         btnAddFormAddModule();
     });
     $(document).on('click', '#modal-btn-edit', function () {
-        btnEditFormAddModule($(document).find('#input-project-module-id'));
+        btnEditFormAddModule(inputProjectModuleId.val());
     });
     $(document).on('click', '.modal-btn-replace-delete', function () {
         $(this).closest('.form-group').remove();
@@ -23,18 +28,76 @@ var navAddModuleData;
             pos = parseInt(lastInput.val()) + 1;
         }
 
-        navAddModuleData.append(getTemplateReplaceHtml(pos));
+        addModuleDataReplace(pos);
     });
-    $('#modal-add-module').on('show.bs.modal', function () {
-        formAddModule.get(0).reset();
-        navAddModuleData.find('.form-group').each(function () {
-            if ($(this).find('input[type=hidden]').length > 0) {
-                $(this).remove();
-            }
-        });
-        $('a[href*=nav-add-module-general]').click();
+    $('#modal-add-module').on('show.bs.modal', function (event) {
+        resetFormAddModule();
+
+        var moduleId = $(event.relatedTarget).data('project-module-id');
+
+        if (moduleId !== undefined) {
+            fillFormAddModule(moduleId);
+        }
     });
 })();
+
+function addModuleDataReplace(pos, callback) {
+    var html = getTemplateReplaceHtml(pos);
+
+    if (callback !== undefined) {
+        html = callback(getTemplateReplaceHtml(pos));
+    }
+
+    navAddModuleData.append(html);
+}
+
+function fillFormAddModule(moduleId) {
+    var moduleObj = getModuleObjectById(moduleId);
+    var templateReplaceStr = moduleObj['projectClassesTemplateReplace'];
+    var templateReplaceObj = JSON.parse(templateReplaceStr);
+
+    inputProjectModuleId.val(moduleId);
+    formAddModule.find('#input-project-module-name').val(moduleObj['projectModuleName']);
+    formAddModule.find('#input-project-class-template-name').val(moduleObj['projectClassesTemplateName']);
+    formAddModule.find('#input-project-module-package').val(moduleObj['projectModulePackage']);
+    formAddModule.find('#input-project-class-template-path').val(moduleObj['projectClassesTemplatePath']);
+    formAddModule.find('#input-project-class-template-type').val(moduleObj['projectClassesTemplateType']);
+    inputTemplateReplace.val(templateReplaceStr);
+
+    Object.keys(templateReplaceObj).forEach(function (key) {
+        addModuleDataReplace(key, function (html) {
+            var element = $(html);
+
+            element.find('input[type=text]').val(templateReplaceObj[key]);
+
+            return element.html();
+        });
+    });
+}
+
+function getModuleObjectById(id) {
+    var moduleObjects = getModuleObjects();
+    var moduleObj = {};
+
+    for (var i = 0, len = moduleObjects.length; i < len; i++) {
+        if (checkModuleId(moduleObjects[i], id)) {
+            moduleObj = moduleObjects[i];
+            break;
+        }
+    }
+
+    return moduleObj;
+}
+
+function resetFormAddModule() {
+    formAddModule.get(0).reset();
+    navAddModuleData.find('.form-group').each(function () {
+        if ($(this).find('input[type=hidden]').length > 0) {
+            $(this).remove();
+        }
+    });
+    $('a[href*=nav-add-module-general]').click();
+}
 
 function getTemplateReplaceHtml(pos) {
     //TODO: mover a una plantilla.
@@ -59,13 +122,17 @@ function btnEditFormAddModule(projectModuleId) {
     var moduleObj = getFormAddModuleObj();
 
     for (var i = 0, len = moduleObjects.length; i < len; i++) {
-        if (moduleObjects[i]["projectModuleId"] == projectModuleId) {
+        if (checkModuleId(moduleObjects[i], projectModuleId)) {
             moduleObjects[i] = moduleObj;
             break;
         }
     }
 
     updateProjectModules(moduleObjects);
+}
+
+function checkModuleId(moduleObject, moduleId) {
+    return moduleObject["projectModuleId"] == moduleId;
 }
 
 function btnAddFormAddModule() {
@@ -115,7 +182,6 @@ function getFormAddModuleObj() {
 }
 
 function updateTemplateReplace() {
-    var inputTemplateReplace = formAddModule.find('#input-project-classes-template-replace');
     var replaceObj = {};
 
     navAddModuleData.find('.form-group').each(function () {

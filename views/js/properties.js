@@ -4,6 +4,10 @@ var navAddModuleData;
 var inputProjectModuleId;
 var inputTemplateReplace;
 var modalAddModule;
+var modalAddModuleTitle;
+var modalBtnAdd;
+var modalBtnEdit;
+var modalBtnDelete;
 
 (function () {
     modalAddModule = $(document).find('#modal-add-module');
@@ -12,6 +16,10 @@ var modalAddModule;
     navAddModuleData = $(document).find('#nav-add-module-data');
     inputProjectModuleId = formAddModule.find('#input-project-module-id');
     inputTemplateReplace = formAddModule.find('#input-project-classes-template-replace');
+    modalAddModuleTitle = modalAddModule.find('.modal-title');
+    modalBtnAdd = modalAddModule.find('#modal-btn-add');
+    modalBtnEdit = modalAddModule.find('#modal-btn-edit');
+    modalBtnDelete = modalAddModule.find('#modal-btn-delete');
 
     $(document).on('click', '#modal-btn-add', function () {
         if (checkFormValidity(formAddModule)) {
@@ -40,15 +48,27 @@ var modalAddModule;
         appendHtmlTemplateReplace(pos);
     });
     $('#modal-add-module').on('show.bs.modal', function (event) {
+        var moduleId = $(event.relatedTarget).data('project-module-id');
+        var modalTitle = 'Nuevo modulo';
+
         resetFormAddModule();
 
-        var moduleId = $(event.relatedTarget).data('project-module-id');
-
         if (moduleId !== undefined) {
+            modalTitle = 'Editar modulo';
             fillFormAddModule(moduleId);
+            removeClassDNone(modalBtnEdit);
+            removeClassDNone(modalBtnDelete);
+        } else {
+            removeClassDNone(modalBtnAdd);
         }
+
+        modalAddModuleTitle.text(modalTitle);
     });
 })();
+
+function removeClassDNone(elementBtn) {
+    elementBtn.removeClass('d-none');
+}
 
 function appendHtmlTemplateReplace(pos, callback) {
     var html = getTemplateReplaceHtml(pos);
@@ -98,8 +118,20 @@ function getModuleObjectById(id) {
     return moduleObj;
 }
 
+function addClassDNoneModalAddModule() {
+    addClassDNone(modalBtnAdd);
+    addClassDNone(modalBtnEdit);
+    addClassDNone(modalBtnDelete);
+}
+
+function addClassDNone(elementBtn) {
+    elementBtn.addClass('d-none');
+}
+
 function resetFormAddModule() {
-    resetForm(formAddModule);
+    resetElementForm(formAddModule);
+    addClassDNoneModalAddModule();
+
     navAddModuleData.find('.form-group').each(function () {
         if ($(this).find('input[type=hidden]').length > 0) {
             $(this).remove();
@@ -128,7 +160,7 @@ function getTemplateReplaceHtml(pos) {
 
 function getNewModuleHtml(moduleName) {
     //TODO: mover a una plantilla.
-    return '<div class="list-group-item d-flex justify-content-between align-items-center"\n' +
+    return '<div id="collapse-' + moduleName + '" class="list-group-item d-flex justify-content-between align-items-center"\n' +
         '     data-toggle="collapse" data-target="#' + moduleName + '">\n' +
         '    <span class="span-module-name">' + moduleName + '</span>\n' +
         '    <span class="badge badge-primary badge-pill">1</span>\n' +
@@ -191,18 +223,15 @@ function updateHtmlModulesList(moduleObjects, moduleObj, addNew) {
     var moduleId = moduleObj['projectModuleId']
     var newModule = $('<div></div>').append(getNewModuleHtml(moduleName));
     var newPackage = getNewModulePackageHtml(modulePackage, moduleId);
-    var exists = false;
 
-    for (var i = 0, len = moduleObjects.length; i < len; i++) {
-        var currentObj = moduleObjects[i];
+    moduleObjects = moduleObjects.filter(function (value) {
+        return value['projectModuleName'] == moduleName;
+    });
 
-        if (currentObj['projectModuleName'] == moduleName) {
-            exists = true;
-            break;
-        }
-    }
+    if (moduleObjects.length > 0) {
+        //Se le suma 1, ya que aun no se ha agregado el nuevo modulo a la lista.
+        containerModules.find('div[id=collapse-' + moduleName + '] span.badge').text(moduleObjects.length + 1);
 
-    if (exists) {
         if (addNew) {
             containerModules.find('div[id=' + moduleName + '] > ul.list-group').append(newPackage);
         } else {

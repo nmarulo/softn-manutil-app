@@ -4,7 +4,7 @@ function checkFormValidity(elementForm) {
     return elementForm.get(0).checkValidity();
 }
 
-function resetForm(elementForm) {
+function resetElementForm(elementForm) {
     elementForm.removeClass('was-validated');
     elementForm.get(0).reset();
 }

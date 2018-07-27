@@ -8,6 +8,7 @@ var modalAddModuleTitle;
 var modalBtnAdd;
 var modalBtnEdit;
 var modalBtnDelete;
+var containerAccordionModules;
 
 (function () {
     modalAddModule = $(document).find('#modal-add-module');
@@ -20,6 +21,7 @@ var modalBtnDelete;
     modalBtnAdd = modalAddModule.find('#modal-btn-add');
     modalBtnEdit = modalAddModule.find('#modal-btn-edit');
     modalBtnDelete = modalAddModule.find('#modal-btn-delete');
+    containerAccordionModules = $(document).find('#container-accordion-modules')
 
     $(document).on('click', '#modal-btn-add', function () {
         if (checkFormValidity(formAddModule)) {
@@ -32,6 +34,9 @@ var modalBtnDelete;
             btnEditFormAddModule(inputProjectModuleId.val());
             modalAddModule.modal('hide');
         }
+    });
+    $(document).on('click', '#modal-btn-delete', function () {
+        btnDeleteModule(inputProjectModuleId.val());
     });
     $(document).on('click', '.modal-btn-replace-delete', function () {
         $(this).closest('.form-group').remove();
@@ -64,6 +69,16 @@ var modalBtnDelete;
         modalAddModuleTitle.text(modalTitle);
     });
 })();
+
+function btnDeleteModule(moduleId) {
+    var moduleObj = getModuleObjectById(moduleId);
+    var moduleObjects = getModuleObjects().filter(function (value) {
+        return value['projectModuleId'] != moduleId;
+    });
+
+    updateProjectModules(moduleObjects);
+    removeHtmlModuleList(moduleObj['projectModuleName'], moduleObj['projectModuleId']);
+}
 
 function removeClassDNone(elementBtn) {
     elementBtn.removeClass('d-none');
@@ -188,6 +203,10 @@ function btnEditFormAddModule(projectModuleId) {
 
     for (var i = 0, len = moduleObjects.length; i < len; i++) {
         if (checkModuleId(moduleObjects[i], projectModuleId)) {
+            /*
+             * Se establece "projectModuleName", ya que, este campo esta deshabilitado
+             * y no se obtiene con el "serializeArray" de en "getFormAddModuleObj()".
+             */
             moduleObj['projectModuleName'] = moduleObjects[i]['projectModuleName'];
             moduleObjects[i] = moduleObj;
             break;
@@ -218,8 +237,21 @@ function btnAddFormAddModule() {
     updateProjectModules(moduleObjects.concat(moduleObj));
 }
 
+function removeHtmlModuleList(moduleName, moduleId) {
+    var elementContainerUl = containerAccordionModules.find('div[id=' + moduleName + ']');
+    var elementLi = function () {
+        return elementContainerUl.find('ul.list-group li');
+    };
+
+    elementLi().find('a[data-project-module-id=' + moduleId + ']').closest('li').remove();
+
+    if (elementLi().length === 0) {
+        containerAccordionModules.find('div[id=collapse-' + moduleName + ']').remove();
+        elementContainerUl.remove();
+    }
+}
+
 function updateHtmlModulesList(moduleObjects, moduleObj, addNew) {
-    var containerModules = $(document).find('#container-accordion-modules');
     var moduleName = moduleObj['projectModuleName'];
     var modulePackage = moduleObj['projectModulePackage'];
     var moduleId = moduleObj['projectModuleId']
@@ -232,12 +264,12 @@ function updateHtmlModulesList(moduleObjects, moduleObj, addNew) {
 
     if (moduleObjects.length > 0) {
         //Se le suma 1, ya que aun no se ha agregado el nuevo modulo a la lista.
-        containerModules.find('div[id=collapse-' + moduleName + '] span.badge').text(moduleObjects.length + 1);
+        containerAccordionModules.find('div[id=collapse-' + moduleName + '] span.badge').text(moduleObjects.length + 1);
 
         if (addNew) {
-            containerModules.find('div[id=' + moduleName + '] > ul.list-group').append(newPackage);
+            containerAccordionModules.find('div[id=' + moduleName + '] > ul.list-group').append(newPackage);
         } else {
-            containerModules.find('div[id=' + moduleName + '] > ul.list-group > li.list-group-item > a[data-project-module-id=' + moduleId + ']').text(modulePackage);
+            containerAccordionModules.find('div[id=' + moduleName + '] > ul.list-group > li.list-group-item > a[data-project-module-id=' + moduleId + ']').text(modulePackage);
         }
     } else {
         newModule.find('div > ul.list-group').append(newPackage);

@@ -28,7 +28,6 @@ var modalBtnDelete;
         }
     });
     $(document).on('click', '#modal-btn-edit', function () {
-        //TODO: y si se cambia el nombre del modulo, se debe actualizar lista html de módulos.
         if (checkFormValidity(formAddModule)) {
             btnEditFormAddModule(inputProjectModuleId.val());
             modalAddModule.modal('hide');
@@ -84,9 +83,11 @@ function fillFormAddModule(moduleId) {
     var moduleObj = getModuleObjectById(moduleId);
     var templateReplaceStr = moduleObj['projectClassesTemplateReplace'];
     var templateReplaceObj = JSON.parse(templateReplaceStr);
+    var inputModuleName = formAddModule.find('#input-project-module-name');
 
     inputProjectModuleId.val(moduleId);
-    formAddModule.find('#input-project-module-name').val(moduleObj['projectModuleName']);
+    inputModuleName.val(moduleObj['projectModuleName']);
+    inputModuleName.attr('disabled', 'disabled');
     formAddModule.find('#input-project-class-template-name').val(moduleObj['projectClassesTemplateName']);
     formAddModule.find('#input-project-module-package').val(moduleObj['projectModulePackage']);
     formAddModule.find('#input-project-class-template-path').val(moduleObj['projectClassesTemplatePath']);
@@ -187,6 +188,7 @@ function btnEditFormAddModule(projectModuleId) {
 
     for (var i = 0, len = moduleObjects.length; i < len; i++) {
         if (checkModuleId(moduleObjects[i], projectModuleId)) {
+            moduleObj['projectModuleName'] = moduleObjects[i]['projectModuleName'];
             moduleObjects[i] = moduleObj;
             break;
         }

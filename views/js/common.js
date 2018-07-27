@@ -7,4 +7,5 @@ function checkFormValidity(elementForm) {
 function resetElementForm(elementForm) {
     elementForm.removeClass('was-validated');
     elementForm.get(0).reset();
+    elementForm.find('input').removeAttr('disabled');
 }

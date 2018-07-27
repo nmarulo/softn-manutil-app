@@ -149,27 +149,21 @@
                                         Agregar modulo
                                     </button>
                                 </div>
-                                <div id="container-accordion" class="list-group accordion text-dark">
-                                    <div class="list-group-item d-flex justify-content-between align-items-center">
-                                        <button class="btn btn-link" type="button" data-toggle="collapse"
-                                                data-target="#collapseA">
-                                            modulo-a
-                                        </button>
+                                <div id="container-accordion-modules" class="list-group accordion text-dark">
+                                    <div class="list-group-item d-flex justify-content-between align-items-center"
+                                         data-toggle="collapse" data-target="#modulo-a">
+                                        <span class="span-module-name">modulo-a</span>
                                         <span class="badge badge-primary badge-pill">4</span>
                                     </div>
-                                    <div id="collapseA" class="collapse text-dark"
-                                         data-parent="#container-accordion">
-                                        <div class="bg-white p-3">
-                                            <ul>
-                                                <li>
-                                                    <!-- TODO: al pulsar, abre una ventana modal donde se puede editar o borrar -->
-                                                    <a href="#" class="text-primary" data-id="0">package.a</a>
-                                                </li>
-                                                <li>package.b</li>
-                                                <li>package.c</li>
-                                                <li>package.d</li>
-                                            </ul>
-                                        </div>
+                                    <div id="modulo-a" class="collapse" data-parent="#container-accordion-modules">
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item">
+                                                <a href="#" data-toggle="modal" data-target="#modal-add-module"
+                                                   class="text-primary" data-project-module-id="0">
+                                                    package.a
+                                                </a>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>

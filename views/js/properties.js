@@ -21,8 +21,17 @@ var containerAccordionModules;
     modalBtnAdd = modalAddModule.find('#modal-btn-add');
     modalBtnEdit = modalAddModule.find('#modal-btn-edit');
     modalBtnDelete = modalAddModule.find('#modal-btn-delete');
-    containerAccordionModules = $(document).find('#container-accordion-modules')
+    containerAccordionModules = $(document).find('#container-accordion-modules');
 
+    $(document).on('click', '#btn-edit-properties', function () {
+        var form = $(document).find('#form-edit-properties');
+
+        if (checkFormValidity(form)) {
+            removeClassWasValidated(form);
+            //TODO: llamar al comando de java.
+            console.log(JSON.stringify(getFormObject(form)));
+        }
+    });
     $(document).on('click', '#modal-btn-add', function () {
         if (checkFormValidity(formAddModule)) {
             btnAddFormAddModule();
@@ -295,17 +304,7 @@ function updateProjectModules(moduleObjects) {
 function getFormAddModuleObj() {
     updateTemplateReplace();
 
-    var moduleObj = {};
-    var modalFormSerialize = formAddModule.serializeArray();
-
-    for (var i = 0, len = modalFormSerialize.length; i < len; i++) {
-        var name = modalFormSerialize[i]["name"];
-        var value = modalFormSerialize[i]["value"];
-
-        moduleObj[name] = value;
-    }
-
-    return moduleObj;
+    return getFormObject(formAddModule);
 }
 
 function updateTemplateReplace() {

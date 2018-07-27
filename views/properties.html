@@ -19,13 +19,8 @@
             <div class="cover">
                 <main role="main" class="mx-auto cover-container p-3 clearfix">
                     <h1>Editar configuración
-                        <button type="submit" class="btn btn-success">Editar</button>
+                        <button id="btn-edit-properties" type="button" class="btn btn-success">Editar</button>
                     </h1>
-                    <!-- TODO: el fichero properties, se establece automáticamente, pero si no lo encuentra (no se mostraran los campos de configuración) se mostrara el input para escribir la ruta manualmente. Despues de escribir la ruta y comprobar que existe, se mostraran los campos de configuración -->
-                    <div class="form-group">
-                        <input id="input-file-properties" class="form-control" type="file"
-                               name="input_file_properties" placeholder="C:\softn-manutil-app\master.properties">
-                    </div>
                     <form id="form-edit-properties" novalidate>
                         <nav>
                             <div class="nav nav-tabs" id="nav-tab-inputs" role="tablist">
@@ -97,7 +92,6 @@
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="nav-optionals" role="tabpanel">
-                                <!-- TODO: dejar ocultos y agregar un botón para mostrarlos -->
                                 <h4>Módulos</h4>
                                 <div class="form-group">
                                     <div class="row">
@@ -106,7 +100,7 @@
                                                 <label for="form-project-module-format-separator">Separador</label>
                                                 <input id="form-project-module-format-separator" class="form-control"
                                                        type="text" name="projectModuleFormatSeparator" placeholder=":"
-                                                       required>
+                                                       value=":" required>
                                                 <div class="invalid-tooltip">
                                                     Este campo es requerido.
                                                 </div>
@@ -119,7 +113,7 @@
                                                 <input id="form-project-module-format-position-directory"
                                                        class="form-control" type="text"
                                                        name="projectModuleFormatPositionDirectory"
-                                                       placeholder="0" required>
+                                                       value="0" placeholder="0" required>
                                                 <div class="invalid-tooltip">
                                                     Este campo es requerido.
                                                 </div>
@@ -132,7 +126,7 @@
                                                 <input id="form-project-module-format-position-package"
                                                        class="form-control" type="text"
                                                        name="projectModuleFormatPositionPackage"
-                                                       placeholder="1" required>
+                                                       value="1" placeholder="1" required>
                                                 <div class="invalid-tooltip">
                                                     Este campo es requerido.
                                                 </div>
@@ -167,7 +161,8 @@
                 </footer>
             </div>
         </div>
-        <div class="modal fade" id="modal-add-module" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="false">
+        <div class="modal fade" id="modal-add-module" tabindex="-1" role="dialog" aria-hidden="true"
+             data-backdrop="false">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">

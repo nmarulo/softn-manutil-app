@@ -126,7 +126,7 @@ function fillFormEditProperties() {
                 updateProjectModules(inputModules.concat(value));
             });
         } catch (e) {
-            common.modalInformation(e);
+            common.modalInformation(stdout + '\n' + e);
         }
     });
 }

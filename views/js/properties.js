@@ -11,8 +11,8 @@ let modalBtnAdd;
 let modalBtnEdit;
 let modalBtnDelete;
 let containerAccordionModules;
+let formEditProperties;
 
-//TODO: no permitir espacios en el nombre del modulo.
 (function () {
     modalAddModule = $(document).find('#modal-add-module');
     formAddModule = $(document).find('#modal-form-add-module');
@@ -25,28 +25,13 @@ let containerAccordionModules;
     modalBtnEdit = modalAddModule.find('#modal-btn-edit');
     modalBtnDelete = modalAddModule.find('#modal-btn-delete');
     containerAccordionModules = $(document).find('#container-accordion-modules');
+    formEditProperties = $(document).find('#form-edit-properties');
     inputProjectModules.val("[]");
 
     $(document).on('click', '#btn-edit-properties', function () {
-        let form = $(document).find('#form-edit-properties');
-
-        if (common.checkFormValidity(form)) {
-            common.removeClassWasValidated(form);
-            let formObj = common.getFormObject(form);
-            let modules = JSON.parse(formObj['projectModules']).map(function (value) {
-                value['projectClassesTemplateReplace'] = JSON.parse(value['projectClassesTemplateReplace']);
-
-                return value;
-            });
-
-            formObj['projectModules'] = modules;
-
-            let json = JSON.stringify(formObj).replace(/"/g, '\'');
-            let properties = common.getFilePathProperties();
-
-            common.execJava('--edit-properties -p "' + properties + '" --json "' + json + '"', function (stdout) {
-                common.modalInformation(stdout);
-            });
+        if (common.checkFormValidity(formEditProperties)) {
+            common.removeClassWasValidated(formEditProperties);
+            btnEditProperties();
         }
     });
     $(document).on('click', '#modal-btn-add', function () {
@@ -65,6 +50,7 @@ let containerAccordionModules;
         btnDeleteModule(inputProjectModuleId.val());
     });
     $(document).on('click', '.modal-btn-replace-delete', function () {
+        //Solo elimino el elemento, ya que, al pulsar editar se vuelve a obtener toda la lista.
         $(this).closest('.form-group').remove();
     });
     $(document).on('click', '#modal-btn-replace-add', function () {
@@ -94,7 +80,34 @@ let containerAccordionModules;
 
         modalAddModuleTitle.text(modalTitle);
     });
+    $(document).on('keypress', '#input-project-module-name', function (event) {
+        if (event.keyCode === 32) {//Barra espaciadora
+            return false;
+        }
+    });
 })();
+
+function btnEditProperties() {
+    let formObj = common.getFormObject(formEditProperties);
+    formObj = parseFormObjModules(formObj);
+
+    let json = JSON.stringify(formObj).replace(/"/g, '\'');
+    let properties = common.getFilePathProperties();
+
+    common.execJava('--edit-properties -p "' + properties + '" --json "' + json + '"', function (stdout) {
+        common.modalInformation(stdout);
+    });
+}
+
+function parseFormObjModules(formObj) {
+    formObj['projectModules'] = JSON.parse(formObj['projectModules']).map(function (value) {
+        value['projectClassesTemplateReplace'] = JSON.parse(value['projectClassesTemplateReplace']);
+
+        return value;
+    });
+
+    return formObj;
+}
 
 function btnDeleteModule(moduleId) {
     let moduleObj = getModuleObjectById(moduleId);

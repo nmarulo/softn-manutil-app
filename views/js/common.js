@@ -21,9 +21,7 @@ module.exports = {
 
         for (let i = 0, len = serialize.length; i < len; i++) {
             let name = serialize[i]["name"];
-            let value = serialize[i]["value"];
-
-            obj[name] = value;
+            obj[name] = serialize[i]["value"];
         }
 
         return obj;

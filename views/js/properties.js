@@ -26,8 +26,12 @@ let formEditProperties;
     modalBtnDelete = modalAddModule.find('#modal-btn-delete');
     containerAccordionModules = $(document).find('#container-accordion-modules');
     formEditProperties = $(document).find('#form-edit-properties');
-    inputProjectModules.val("[]");
 
+    $(document).on('click', '#btn-reload-properties', function () {
+        updateProjectModules([]);
+        containerAccordionModules.html('');
+        fillFormEditProperties();
+    });
     $(document).on('click', '#btn-edit-properties', function () {
         if (common.checkFormValidity(formEditProperties)) {
             common.removeClassWasValidated(formEditProperties);
@@ -352,7 +356,7 @@ function updateHtmlModulesList(moduleObjects, moduleObj, addNew) {
         }
     } else {
         newModule.find('div > ul.list-group').append(newPackage);
-        $(document).find('#container-accordion-modules').append(newModule.html());
+        containerAccordionModules.append(newModule.html());
     }
 }
 

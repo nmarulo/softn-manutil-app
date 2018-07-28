@@ -1,29 +1,61 @@
-function checkFormValidity(elementForm) {
-    elementForm.addClass('was-validated');
+const {exec} = require('child_process');
+const fs = require('fs');
 
-    return elementForm.get(0).checkValidity();
-}
+module.exports = {
+    resetElementForm: function (elementForm) {
+        this.removeClassWasValidated(elementForm);
+        elementForm.get(0).reset();
+        elementForm.find('input').removeAttr('disabled');
+    },
+    checkFormValidity: function (elementForm) {
+        elementForm.addClass('was-validated');
 
-function resetElementForm(elementForm) {
-    removeClassWasValidated(elementForm);
-    elementForm.get(0).reset();
-    elementForm.find('input').removeAttr('disabled');
-}
+        return elementForm.get(0).checkValidity();
+    },
+    removeClassWasValidated: function (element) {
+        element.removeClass('was-validated');
+    },
+    getFormObject: function (elementForm) {
+        let obj = {};
+        let serialize = elementForm.serializeArray();
 
-function removeClassWasValidated(element) {
-    element.removeClass('was-validated');
-}
+        for (let i = 0, len = serialize.length; i < len; i++) {
+            let name = serialize[i]["name"];
+            let value = serialize[i]["value"];
 
-function getFormObject(elementForm) {
-    var obj = {};
-    var serialize = elementForm.serializeArray();
+            obj[name] = value;
+        }
 
-    for (var i = 0, len = serialize.length; i < len; i++) {
-        var name = serialize[i]["name"];
-        var value = serialize[i]["value"];
+        return obj;
+    },
+    execJava: function (cli, callback) {
+        let jar = this.getFilePathJar();
+        cli = 'java -jar "' + jar + '" ' + cli;
 
-        obj[name] = value;
+        exec(cli, (err, stdout, stderr) => {
+            if (err) {
+                return;
+            }
+
+            if (callback !== undefined) {
+                callback(stdout);
+            }
+        });
+    },
+    modalInformation: function (message) {
+        $('#modal-information .modal-body .custom-pre').text(message);
+        $('#modal-information').modal('show');
+    },
+    getFilePathJar: function () {
+        return this.getManutilConfig()['filePathJar'];
+    },
+    getTemplatePath: function () {
+        return this.getManutilConfig()['templatesPath'];
+    },
+    getFilePathProperties: function () {
+        return this.getManutilConfig()['filePathProperties'];
+    },
+    getManutilConfig: function () {
+        return JSON.parse(fs.readFileSync(__dirname + '/../../softn-manutil-config.json', 'utf8'));
     }
-
-    return obj;
-}
+};

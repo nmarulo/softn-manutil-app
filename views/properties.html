@@ -5,15 +5,35 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="css/bootstrap.css">
+        <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
         <link rel="stylesheet" href="css/style.css">
         <title>softn-manutil-app</title>
     </head>
     <body>
         <div class="d-flex flex-column w-100 h-100">
             <header class="masthead">
-                <div class="mx-auto cover-container p-3 clearfix">
-                    <h3 class="masthead-brand">SoftN Manutil App</h3>
+                <div class="mx-auto cover-container">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand" href="#">Manutil</a>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse"
+                                data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                                aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav mr-auto">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="index.html">Crear <span class="sr-only">(current)</span></a>
+                                </li>
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="properties.html">Propiedades</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Configuración</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
                 </div>
             </header>
             <div class="cover">
@@ -288,9 +308,8 @@
             </div>
         </div>
         <!-- Optional JavaScript -->
-        <script>window.$ = window.jQuery = require('./js/jquery-3.3.1.js');</script>
-        <script src="js/bootstrap.js"></script>
-        <!--<script>require('./js/common.js');</script>-->
+        <script>window.$ = window.jQuery = require('jquery');</script>
+        <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
         <script>require('./js/properties.js');</script>
     </body>
 </html>

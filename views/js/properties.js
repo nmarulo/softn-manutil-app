@@ -85,7 +85,47 @@ let formEditProperties;
             return false;
         }
     });
+
+    fillFormEditProperties();
 })();
+
+function fillFormEditProperties() {
+    let properties = common.getFilePathProperties();
+    let modal = $(document).find('#modal-load-info');
+    modal.modal('show');
+    common.execJava('--properties-json -p "' + properties + '"', function (stdout) {
+        modal.modal('hide');
+        try {
+            let propertiesJson = JSON.parse(stdout);
+            let projectModules = propertiesJson['projectModules'];
+
+            formEditProperties.find('#input-project-directory').val(propertiesJson['projectDirectory']);
+            formEditProperties.find('#input-project-directory-packages').val(propertiesJson['projectDirectoryPackages']);
+            formEditProperties.find('#input-project-main-packages').val(propertiesJson['projectMainPackages']);
+            formEditProperties.find('#input-project-class-type').val(propertiesJson['projectClassType']);
+            formEditProperties.find('#input-project-package-separator').val(propertiesJson['projectPackageSeparator']);
+            formEditProperties.find('#input-project-module-format-separator').val(propertiesJson['projectModuleFormatSeparator']);
+            formEditProperties.find('#input-project-module-format-position-directory').val(propertiesJson['projectModuleFormatPositionDirectory']);
+            formEditProperties.find('#input-project-module-format-position-package').val(propertiesJson['projectModuleFormatPositionPackage']);
+
+            //Para seguir con la misma implementación de "fillFormAddModule".
+            projectModules = projectModules.map(function (value) {
+                value['projectClassesTemplateReplace'] = JSON.stringify(value['projectClassesTemplateReplace']);
+
+                return value;
+            });
+
+            projectModules.forEach(function (value) {
+                let inputModules = getInputModuleObjects();
+
+                updateHtmlModulesList(inputModules, value, true);
+                updateProjectModules(inputModules.concat(value));
+            });
+        } catch (e) {
+            common.modalInformation(e);
+        }
+    });
+}
 
 function btnEditProperties() {
     let formObj = common.getFormObject(formEditProperties);
@@ -111,7 +151,7 @@ function parseFormObjModules(formObj) {
 
 function btnDeleteModule(moduleId) {
     let moduleObj = getModuleObjectById(moduleId);
-    let moduleObjects = getModuleObjects().filter(function (value) {
+    let moduleObjects = getInputModuleObjects().filter(function (value) {
         return value['projectModuleId'] != moduleId;
     });
 
@@ -160,7 +200,7 @@ function fillFormAddModule(moduleId) {
 }
 
 function getModuleObjectById(id) {
-    let moduleObjects = getModuleObjects();
+    let moduleObjects = getInputModuleObjects();
     let moduleObj = {};
 
     for (let i = 0, len = moduleObjects.length; i < len; i++) {
@@ -237,7 +277,7 @@ function getNewModulePackageHtml(packageName, moduleId) {
 }
 
 function btnEditFormAddModule(projectModuleId) {
-    let moduleObjects = getModuleObjects();
+    let moduleObjects = getInputModuleObjects();
     let moduleObj = getFormAddModuleObj();
 
     for (let i = 0, len = moduleObjects.length; i < len; i++) {
@@ -261,7 +301,7 @@ function checkModuleId(moduleObject, moduleId) {
 }
 
 function btnAddFormAddModule() {
-    let moduleObjects = getModuleObjects();
+    let moduleObjects = getInputModuleObjects();
     let moduleObj = getFormAddModuleObj();
     let id = 1;
 
@@ -316,7 +356,7 @@ function updateHtmlModulesList(moduleObjects, moduleObj, addNew) {
     }
 }
 
-function getModuleObjects() {
+function getInputModuleObjects() {
     let modules = inputProjectModules.val();
     let moduleObjects = [];
 

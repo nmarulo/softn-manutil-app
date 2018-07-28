@@ -1,4 +1,4 @@
-const {exec} = require('child_process');
+const common = require('./common');
 const fs = require('fs');
 const properties = require("properties");
 const KEY_PROJECT_MODULES = 'project.modules.';
@@ -45,10 +45,6 @@ function isFormValidity(elementForm) {
         return;
     }
 
-    execJava(elementForm);
-}
-
-function execJava(elementForm) {
     let fileJar = elementInputFileJar.val();
     let fileProperties = elementInputFileProperties.val();
     let fileNameClass = elementForm.find('#form-input-name-class').val();
@@ -59,12 +55,8 @@ function execJava(elementForm) {
         cli += ' -m ' + directoryNameModule.join(',');
     }
 
-    exec(cli, (err, stdout, stderr) => {
-        modalInformation(stdout);
-
-        if (err) {
-            return;
-        }
+    common.execJava(cli, function(stdout){
+        common.modalInformation(stdout);
     });
 }
 
@@ -121,7 +113,7 @@ function getFileNameByExt(files, search) {
 function setSelectNameModule(fileName) {
     properties.parse(fileName, {path: true}, function (error, obj) {
         if (error) {
-            modalInformation('Error al obtener los modulos del fichero ".properties".');
+            common.modalInformation('Error al obtener los modulos del fichero ".properties".');
 
             return;
         }
@@ -146,11 +138,6 @@ function someValueNameModule(option) {
         .some(value => value === option);
 }
 
-function modalInformation(message) {
-    $('#modal-information .modal-body .custom-pre').text(message);
-    $('#modal-information').modal('show');
-}
-
 function getVersion(path) {
     if (maxDirSearch === 0) {
         return;
@@ -170,7 +157,7 @@ function getVersion(path) {
         } else {
             fs.readFile(path + '/' + fileJSONFilter, 'utf8', (error, data) => {
                 if (error) {
-                    modalInformation("Error al obtener la versión de la app.");
+                    common.modalInformation("Error al obtener la versión de la app.");
 
                     return;
                 }

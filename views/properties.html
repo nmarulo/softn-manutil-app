@@ -111,7 +111,7 @@
                                                 <label for="form-project-module-format-position-directory">Posición del
                                                     directorio</label>
                                                 <input id="form-project-module-format-position-directory"
-                                                       class="form-control" type="text"
+                                                       class="form-control" type="number"
                                                        name="projectModuleFormatPositionDirectory"
                                                        value="0" placeholder="0" required>
                                                 <div class="invalid-tooltip">
@@ -124,7 +124,7 @@
                                                 <label for="form-project-module-format-position-package">Posición del
                                                     paquete</label>
                                                 <input id="form-project-module-format-position-package"
-                                                       class="form-control" type="text"
+                                                       class="form-control" type="number"
                                                        name="projectModuleFormatPositionPackage"
                                                        value="1" placeholder="1" required>
                                                 <div class="invalid-tooltip">
@@ -136,7 +136,7 @@
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="nav-modules" role="tabpanel">
-                                <input id="input-project-modules" type="hidden" name="projectModules"/>
+                                <input id="input-project-modules" type="hidden" name="projectModules" value="[]"/>
                                 <div class="form-group">
                                     <button id="btn-add-module" class="btn btn-primary" type="button"
                                             data-toggle="modal" data-target="#modal-add-module">
@@ -199,29 +199,27 @@
                             <div class="tab-content" id="nav-tab-content-add-module">
                                 <input id="input-project-module-id" type="hidden" name="projectModuleId"/>
                                 <div class="tab-pane fade show active" id="nav-add-module-general" role="tabpanel">
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <div class="position-relative">
-                                                    <label for="input-project-module-name">Nombre</label>
-                                                    <input id="input-project-module-name" class="form-control"
-                                                           type="text" name="projectModuleName"
-                                                           placeholder="module-a" required>
-                                                    <div class="invalid-tooltip">
-                                                        Este campo es requerido.
-                                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group position-relative">
+                                                <label for="input-project-module-name">Nombre</label>
+                                                <input id="input-project-module-name" class="form-control"
+                                                       type="text" name="projectModuleName"
+                                                       placeholder="module-a" required>
+                                                <div class="invalid-tooltip">
+                                                    Este campo es requerido.
                                                 </div>
                                             </div>
-                                            <div class="col-sm-6">
-                                                <div class="position-relative">
-                                                    <label for="input-project-class-template-name">Nombre de la
-                                                        clase</label>
-                                                    <input id="input-project-class-template-name" class="form-control"
-                                                           type="text" name="projectClassesTemplateName"
-                                                           placeholder="Red#{className}SoftNModuleA" required>
-                                                    <div class="invalid-tooltip">
-                                                        Este campo es requerido.
-                                                    </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group position-relative">
+                                                <label for="input-project-class-template-name">Nombre de la
+                                                    clase</label>
+                                                <input id="input-project-class-template-name" class="form-control"
+                                                       type="text" name="projectClassesTemplateName"
+                                                       placeholder="Red#{className}SoftNModuleA" required>
+                                                <div class="invalid-tooltip">
+                                                    Este campo es requerido.
                                                 </div>
                                             </div>
                                         </div>
@@ -271,14 +269,28 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="modal-information" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Información</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <pre class="custom-pre"></pre>
+                        <div class="d-flex justify-content-center">
+                            <button type="button" class="btn btn-dark" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Optional JavaScript -->
-        <script src="js/jquery-3.3.1.js"></script>
+        <script>window.$ = window.jQuery = require('./js/jquery-3.3.1.js');</script>
         <script src="js/bootstrap.js"></script>
-        <script src="js/common.js"></script>
-        <script src="js/properties.js"></script>
-
-        <!--<script>window.$ = window.jQuery = require('./js/jquery-3.3.1.js');</script>-->
-        <!--<script src="js/bootstrap.js"></script>-->
-        <!--<script>require('./js/script.js');</script>-->
+        <!--<script>require('./js/common.js');</script>-->
+        <script>require('./js/properties.js');</script>
     </body>
 </html>

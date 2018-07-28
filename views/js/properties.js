@@ -1,15 +1,18 @@
-var inputProjectModules;
-var formAddModule;
-var navAddModuleData;
-var inputProjectModuleId;
-var inputTemplateReplace;
-var modalAddModule;
-var modalAddModuleTitle;
-var modalBtnAdd;
-var modalBtnEdit;
-var modalBtnDelete;
-var containerAccordionModules;
+const common = require('./common');
 
+let inputProjectModules;
+let formAddModule;
+let navAddModuleData;
+let inputProjectModuleId;
+let inputTemplateReplace;
+let modalAddModule;
+let modalAddModuleTitle;
+let modalBtnAdd;
+let modalBtnEdit;
+let modalBtnDelete;
+let containerAccordionModules;
+
+//TODO: no permitir espacios en el nombre del modulo.
 (function () {
     modalAddModule = $(document).find('#modal-add-module');
     formAddModule = $(document).find('#modal-form-add-module');
@@ -22,24 +25,38 @@ var containerAccordionModules;
     modalBtnEdit = modalAddModule.find('#modal-btn-edit');
     modalBtnDelete = modalAddModule.find('#modal-btn-delete');
     containerAccordionModules = $(document).find('#container-accordion-modules');
+    inputProjectModules.val("[]");
 
     $(document).on('click', '#btn-edit-properties', function () {
-        var form = $(document).find('#form-edit-properties');
+        let form = $(document).find('#form-edit-properties');
 
-        if (checkFormValidity(form)) {
-            removeClassWasValidated(form);
-            //TODO: llamar al comando de java.
-            console.log(JSON.stringify(getFormObject(form)));
+        if (common.checkFormValidity(form)) {
+            common.removeClassWasValidated(form);
+            let formObj = common.getFormObject(form);
+            let modules = JSON.parse(formObj['projectModules']).map(function (value) {
+                value['projectClassesTemplateReplace'] = JSON.parse(value['projectClassesTemplateReplace']);
+
+                return value;
+            });
+
+            formObj['projectModules'] = modules;
+
+            let json = JSON.stringify(formObj).replace(/"/g, '\'');
+            let properties = common.getFilePathProperties();
+
+            common.execJava('--edit-properties -p "' + properties + '" --json "' + json + '"', function (stdout) {
+                common.modalInformation(stdout);
+            });
         }
     });
     $(document).on('click', '#modal-btn-add', function () {
-        if (checkFormValidity(formAddModule)) {
+        if (common.checkFormValidity(formAddModule)) {
             btnAddFormAddModule();
             modalAddModule.modal('hide');
         }
     });
     $(document).on('click', '#modal-btn-edit', function () {
-        if (checkFormValidity(formAddModule)) {
+        if (common.checkFormValidity(formAddModule)) {
             btnEditFormAddModule(inputProjectModuleId.val());
             modalAddModule.modal('hide');
         }
@@ -51,8 +68,8 @@ var containerAccordionModules;
         $(this).closest('.form-group').remove();
     });
     $(document).on('click', '#modal-btn-replace-add', function () {
-        var lastInput = navAddModuleData.find('.form-group > input[type=hidden]:last');
-        var pos = 1;
+        let lastInput = navAddModuleData.find('.form-group > input[type=hidden]:last');
+        let pos = 1;
 
         if (lastInput.length === 1) {
             pos = parseInt(lastInput.val()) + 1;
@@ -61,8 +78,8 @@ var containerAccordionModules;
         appendHtmlTemplateReplace(pos);
     });
     $('#modal-add-module').on('show.bs.modal', function (event) {
-        var moduleId = $(event.relatedTarget).data('project-module-id');
-        var modalTitle = 'Nuevo modulo';
+        let moduleId = $(event.relatedTarget).data('project-module-id');
+        let modalTitle = 'Nuevo modulo';
 
         resetFormAddModule();
 
@@ -80,8 +97,8 @@ var containerAccordionModules;
 })();
 
 function btnDeleteModule(moduleId) {
-    var moduleObj = getModuleObjectById(moduleId);
-    var moduleObjects = getModuleObjects().filter(function (value) {
+    let moduleObj = getModuleObjectById(moduleId);
+    let moduleObjects = getModuleObjects().filter(function (value) {
         return value['projectModuleId'] != moduleId;
     });
 
@@ -94,7 +111,7 @@ function removeClassDNone(elementBtn) {
 }
 
 function appendHtmlTemplateReplace(pos, callback) {
-    var html = getTemplateReplaceHtml(pos);
+    let html = getTemplateReplaceHtml(pos);
 
     if (callback !== undefined) {
         html = callback(getTemplateReplaceHtml(pos));
@@ -104,10 +121,10 @@ function appendHtmlTemplateReplace(pos, callback) {
 }
 
 function fillFormAddModule(moduleId) {
-    var moduleObj = getModuleObjectById(moduleId);
-    var templateReplaceStr = moduleObj['projectClassesTemplateReplace'];
-    var templateReplaceObj = JSON.parse(templateReplaceStr);
-    var inputModuleName = formAddModule.find('#input-project-module-name');
+    let moduleObj = getModuleObjectById(moduleId);
+    let templateReplaceStr = moduleObj['projectClassesTemplateReplace'];
+    let templateReplaceObj = JSON.parse(templateReplaceStr);
+    let inputModuleName = formAddModule.find('#input-project-module-name');
 
     inputProjectModuleId.val(moduleId);
     inputModuleName.val(moduleObj['projectModuleName']);
@@ -120,7 +137,7 @@ function fillFormAddModule(moduleId) {
 
     Object.keys(templateReplaceObj).forEach(function (key) {
         appendHtmlTemplateReplace(key, function (html) {
-            var element = $('<div></div>').append(html);
+            let element = $('<div></div>').append(html);
 
             element.find('input[type=text]').attr('value', templateReplaceObj[key]);
 
@@ -130,10 +147,10 @@ function fillFormAddModule(moduleId) {
 }
 
 function getModuleObjectById(id) {
-    var moduleObjects = getModuleObjects();
-    var moduleObj = {};
+    let moduleObjects = getModuleObjects();
+    let moduleObj = {};
 
-    for (var i = 0, len = moduleObjects.length; i < len; i++) {
+    for (let i = 0, len = moduleObjects.length; i < len; i++) {
         if (checkModuleId(moduleObjects[i], id)) {
             moduleObj = moduleObjects[i];
             break;
@@ -154,7 +171,7 @@ function addClassDNone(elementBtn) {
 }
 
 function resetFormAddModule() {
-    resetElementForm(formAddModule);
+    common.resetElementForm(formAddModule);
     addClassDNoneModalAddModule();
 
     navAddModuleData.find('.form-group').each(function () {
@@ -207,10 +224,10 @@ function getNewModulePackageHtml(packageName, moduleId) {
 }
 
 function btnEditFormAddModule(projectModuleId) {
-    var moduleObjects = getModuleObjects();
-    var moduleObj = getFormAddModuleObj();
+    let moduleObjects = getModuleObjects();
+    let moduleObj = getFormAddModuleObj();
 
-    for (var i = 0, len = moduleObjects.length; i < len; i++) {
+    for (let i = 0, len = moduleObjects.length; i < len; i++) {
         if (checkModuleId(moduleObjects[i], projectModuleId)) {
             /*
              * Se establece "projectModuleName", ya que, este campo esta deshabilitado
@@ -231,12 +248,12 @@ function checkModuleId(moduleObject, moduleId) {
 }
 
 function btnAddFormAddModule() {
-    var moduleObjects = getModuleObjects();
-    var moduleObj = getFormAddModuleObj();
-    var id = 1;
+    let moduleObjects = getModuleObjects();
+    let moduleObj = getFormAddModuleObj();
+    let id = 1;
 
     if (moduleObjects.length > 0) {
-        var lastModule = moduleObjects[moduleObjects.length - 1];
+        let lastModule = moduleObjects[moduleObjects.length - 1];
         id = parseInt(lastModule["projectModuleId"]) + 1;
     }
 
@@ -247,12 +264,13 @@ function btnAddFormAddModule() {
 }
 
 function removeHtmlModuleList(moduleName, moduleId) {
-    var elementContainerUl = containerAccordionModules.find('div[id=' + moduleName + ']');
-    var elementLi = function () {
+    let elementContainerUl = containerAccordionModules.find('div[id=' + moduleName + ']');
+    let elementLi = function () {
         return elementContainerUl.find('ul.list-group li');
     };
 
     elementLi().find('a[data-project-module-id=' + moduleId + ']').closest('li').remove();
+    containerAccordionModules.find('div[id=collapse-' + moduleName + '] span.badge').text(elementLi().length);
 
     if (elementLi().length === 0) {
         containerAccordionModules.find('div[id=collapse-' + moduleName + ']').remove();
@@ -261,21 +279,20 @@ function removeHtmlModuleList(moduleName, moduleId) {
 }
 
 function updateHtmlModulesList(moduleObjects, moduleObj, addNew) {
-    var moduleName = moduleObj['projectModuleName'];
-    var modulePackage = moduleObj['projectModulePackage'];
-    var moduleId = moduleObj['projectModuleId']
-    var newModule = $('<div></div>').append(getNewModuleHtml(moduleName));
-    var newPackage = getNewModulePackageHtml(modulePackage, moduleId);
+    let moduleName = moduleObj['projectModuleName'];
+    let modulePackage = moduleObj['projectModulePackage'];
+    let moduleId = moduleObj['projectModuleId']
+    let newModule = $('<div></div>').append(getNewModuleHtml(moduleName));
+    let newPackage = getNewModulePackageHtml(modulePackage, moduleId);
 
     moduleObjects = moduleObjects.filter(function (value) {
         return value['projectModuleName'] == moduleName;
     });
 
     if (moduleObjects.length > 0) {
-        //Se le suma 1, ya que aun no se ha agregado el nuevo modulo a la lista.
-        containerAccordionModules.find('div[id=collapse-' + moduleName + '] span.badge').text(moduleObjects.length + 1);
-
         if (addNew) {
+            //Se le suma 1, ya que aun no se ha agregado el nuevo modulo a la lista.
+            containerAccordionModules.find('div[id=collapse-' + moduleName + '] span.badge').text(moduleObjects.length + 1);
             containerAccordionModules.find('div[id=' + moduleName + '] > ul.list-group').append(newPackage);
         } else {
             containerAccordionModules.find('div[id=' + moduleName + '] > ul.list-group > li.list-group-item > a[data-project-module-id=' + moduleId + ']').text(modulePackage);
@@ -287,8 +304,8 @@ function updateHtmlModulesList(moduleObjects, moduleObj, addNew) {
 }
 
 function getModuleObjects() {
-    var modules = inputProjectModules.val();
-    var moduleObjects = [];
+    let modules = inputProjectModules.val();
+    let moduleObjects = [];
 
     if (modules.length > 0) {
         moduleObjects = JSON.parse(modules);
@@ -304,15 +321,15 @@ function updateProjectModules(moduleObjects) {
 function getFormAddModuleObj() {
     updateTemplateReplace();
 
-    return getFormObject(formAddModule);
+    return common.getFormObject(formAddModule);
 }
 
 function updateTemplateReplace() {
-    var replaceObj = {};
+    let replaceObj = {};
 
     navAddModuleData.find('.form-group').each(function () {
-        var inputHidden = $(this).find('input[type=hidden]');
-        var inputText = $(this).find('input[type=text]');
+        let inputHidden = $(this).find('input[type=hidden]');
+        let inputText = $(this).find('input[type=text]');
 
         if (inputHidden.length > 0 && inputText.length > 0) {
             replaceObj[inputHidden.val()] = inputText.val()

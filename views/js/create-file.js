@@ -1,119 +1,42 @@
 const common = require('./common');
-const fs = require('fs');
 const properties = require("properties");
 const KEY_PROJECT_MODULES = 'project.modules.';
 const KEY_PROJECT_MODULE_FORMAT_SEPARATOR = 'project.module.format.separator';
 
-let fileJar = '';
-let fileProperties = '';
-let maxDirSearch;
-let maxDirSearchJSON;
-let elementInputFileJar;
-let elementInputFileProperties;
 let elementInputNameModule;
-let elementProjectVersion;
 
 (function () {
-    initVars();
-    initEvents();
-    setPathJarProperties(__dirname);
-    getVersion(__dirname);
-})();
-
-function initVars() {
-    elementInputFileJar = $('#form-input-file-jar');
-    elementInputFileProperties = $('#form-input-file-properties');
-    elementInputNameModule = $('#form-input-name-module');
-    elementProjectVersion = document.getElementById('project-version');
-    maxDirSearchJSON = 5;
-    maxDirSearch = 5;
-}
-
-function initEvents() {
+    elementInputNameModule = $('#input-name-module');
     $('#form-create-files').on('submit', function (event) {
         event.preventDefault();
-        $(this).addClass('was-validated');
-        isFormValidity($(this));
-    });
-    elementInputFileProperties.on('focusout', function () {
-        setSelectNameModule($(this).val());
-    });
-}
+        let form = $(this);
 
-function isFormValidity(elementForm) {
-    if (!elementForm.get(0).checkValidity()) {
-        return;
-    }
+        if (common.checkFormValidity(form)) {
+            common.removeClassWasValidated(form);
+            formCreateFiles(form);
+        }
+    });
+    setSelectNameModule(common.getFilePropertiesPath());
+})();
 
-    let fileJar = elementInputFileJar.val();
-    let fileProperties = elementInputFileProperties.val();
-    let fileNameClass = elementForm.find('#form-input-name-class').val();
+function formCreateFiles(elementForm) {
+    let fileNameClass = elementForm.find('#input-name-class').val();
     let directoryNameModule = elementInputNameModule.val();
-    let cli = 'java -jar ' + fileJar + ' -p ' + fileProperties + ' -c ' + fileNameClass;
+    let cli = '--create-classes -p "' + common.getFilePropertiesPath() + '" -c ' + fileNameClass;
 
     if (directoryNameModule.length > 0 && !directoryNameModule.some(value => value === '')) {
         cli += ' -m ' + directoryNameModule.join(',');
     }
 
-    common.execJava(cli, function(stdout){
+    common.execJava(cli, function (stdout) {
         common.modalInformation(stdout);
     });
-}
-
-function setPathJarProperties(path) {
-    if (maxDirSearch === 0) {
-        return;
-    }
-
-    fs.readdir(path, (err, files) => {
-        --maxDirSearch;
-
-        if (err) {
-            return;
-        }
-
-        let fileJarFilter = getFileNameByExt(files, 'jar');
-        let filePropertiesFilter = getFileNameByExt(files, 'properties');
-
-        if (fileJarFilter.length === 0 || filePropertiesFilter.length === 0) {
-            setPathJarProperties(path + '/..');
-        } else {
-            fileJar = path + '/' + fileJarFilter;
-            fileProperties = path + '/' + filePropertiesFilter;
-        }
-
-        if (maxDirSearch > 1) {
-            return;
-        }
-
-        if (fileJar.length === 0 || filePropertiesFilter.length === 0) {
-            $('#modal-file-jar-properties').modal('toggle');
-            elementInputFileJar.closest('.form-group').removeClass('d-none');
-            elementInputFileJar.attr('type', 'text');
-            elementInputFileProperties.closest('.form-group').removeClass('d-none');
-            elementInputFileProperties.attr('type', 'text');
-        } else {
-            elementInputFileJar.val(fileJar);
-            elementInputFileProperties.val(fileProperties);
-            setSelectNameModule(fileProperties);
-        }
-    });
-}
-
-function getFileNameByExt(files, search) {
-    let filter = files.filter(file => search === file.split('.').pop());
-
-    if(filter.length > 0){
-        return filter.shift();
-    }
-
-    return '';
 }
 
 function setSelectNameModule(fileName) {
     properties.parse(fileName, {path: true}, function (error, obj) {
         if (error) {
-            common.modalInformation('Error al obtener los modulos del fichero ".properties".');
+            common.modalInformation('Error al obtener los módulos del fichero ".properties".\n' + error);
 
             return;
         }
@@ -129,6 +52,10 @@ function setSelectNameModule(fileName) {
                     elementInputNameModule.append('<option>' + value + '</option>');
                 }
             });
+
+        if (elementInputNameModule.find('option').length === 1) {
+            common.modalInformation('No se encontraron módulos.');
+        }
     });
 }
 
@@ -136,38 +63,4 @@ function someValueNameModule(option) {
     return $.makeArray(elementInputNameModule.find('option'))
         .map(value => value.innerText)
         .some(value => value === option);
-}
-
-function getVersion(path) {
-    if (maxDirSearch === 0) {
-        return;
-    }
-
-    fs.readdir(path, (err, files) => {
-        --maxDirSearch;
-
-        if (err) {
-            return;
-        }
-
-        let fileJSONFilter = files.filter(value => value === 'package.json').toString();
-
-        if (fileJSONFilter.length === 0) {
-            getVersion(path + '/..');
-        } else {
-            fs.readFile(path + '/' + fileJSONFilter, 'utf8', (error, data) => {
-                if (error) {
-                    common.modalInformation("Error al obtener la versión de la app.");
-
-                    return;
-                }
-
-                elementProjectVersion.innerText = 'v' + JSON.parse(data).version;
-            });
-        }
-
-        if (maxDirSearch > 1) {
-            return;
-        }
-    });
 }

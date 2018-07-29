@@ -94,7 +94,7 @@ let formEditProperties;
 })();
 
 function fillFormEditProperties() {
-    let properties = common.getFilePathProperties();
+    let properties = common.getFilePropertiesPath();
     let modal = $(document).find('#modal-load-info');
     modal.modal('show');
     common.execJava('--properties-json -p "' + properties + '"', function (stdout) {
@@ -136,7 +136,7 @@ function btnEditProperties() {
     formObj = parseFormObjModules(formObj);
 
     let json = JSON.stringify(formObj).replace(/"/g, '\'');
-    let properties = common.getFilePathProperties();
+    let properties = common.getFilePropertiesPath();
 
     common.execJava('--edit-properties -p "' + properties + '" --json "' + json + '"', function (stdout) {
         common.modalInformation(stdout);

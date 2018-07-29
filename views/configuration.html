@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+        <link rel="stylesheet" href="css/style.css">
+        <title>softn-manutil-app</title>
+    </head>
+    <body>
+        <div class="d-flex flex-column w-100 h-100">
+            <header class="masthead">
+                <div class="mx-auto cover-container">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand" href="#">Manutil</a>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse"
+                                data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                                aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav mr-auto">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="index.html">Crear <span
+                                            class="sr-only">(current)</span></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="properties.html">Propiedades</a>
+                                </li>
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="configuration.html">Configuración</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </header>
+            <div class="mb-auto cover">
+                <main role="main" class="mx-auto cover-container p-3 clearfix">
+                    <h1>Configuración</h1>
+                    <form id="form-edit-configuration" novalidate>
+                        <div class="form-group position-relative">
+                            <label for="input-file-jar-path">Fichero ".jar"</label>
+                            <div class="input-group mb-3">
+                                <input id="input-file-jar-path" class="form-control" type="text"
+                                       name="fileJarPath" placeholder="C:\manutil-cli\manutil.jar" required>
+                                <div class="invalid-tooltip">
+                                    Este campo es requerido.
+                                </div>
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="button" id="btn-select-jar-file">
+                                        Seleccionar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group position-relative">
+                            <label for="input-file-properties-path">Fichero "properties"</label>
+                            <div class="input-group mb-3">
+                                <input id="input-file-properties-path" class="form-control"
+                                       type="text" name="filePropertiesPath"
+                                       placeholder="C:\manutil-cli\master.properties" required>
+                                <div class="invalid-tooltip">
+                                    Este campo es requerido.
+                                </div>
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="button" id="btn-select-properties-file">
+                                        Seleccionar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group position-relative">
+                            <label for="input-directory-template">Directorio de plantillas</label>
+                            <input id="input-directory-template" class="form-control"
+                                   type="text" name="directoryTemplatePath" placeholder="C:\manutil-cli\template\"
+                                   required>
+                            <div class="invalid-tooltip">
+                                Este campo es requerido.
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success">Editar</button>
+                    </form>
+                </main>
+            </div>
+            <div class="mt-auto">
+                <footer class="mx-auto cover-container p-3 clearfix">
+                    <div class="clearfix">
+                        <p class="float-left">
+                            https://github.com/nmarulo/softn-manutil-app
+                        </p>
+                        <p id="project-version" class="float-right">v</p>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        <div class="modal fade" id="modal-information" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Información</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <pre class="custom-pre"></pre>
+                        <div class="d-flex justify-content-center">
+                            <button type="button" class="btn btn-dark" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Optional JavaScript -->
+        <script>window.$ = window.jQuery = require('jquery');</script>
+        <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
+        <script>require('./js/configuration.js');</script>
+    </body>
+</html>

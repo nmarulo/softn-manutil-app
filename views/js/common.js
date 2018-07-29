@@ -27,7 +27,7 @@ module.exports = {
         return obj;
     },
     execJava: function (cli, callback) {
-        let jar = this.getFilePathJar();
+        let jar = this.getFileJarPath();
         cli = 'java -jar "' + jar + '" ' + cli;
 
         exec(cli, (err, stdout, stderr) => {
@@ -44,13 +44,13 @@ module.exports = {
         $('#modal-information .modal-body .custom-pre').text(message);
         $('#modal-information').modal('show');
     },
-    getFilePathJar: function () {
+    getFileJarPath: function () {
         return this.getManutilConfig()['fileJarPath'];
     },
-    getTemplatePath: function () {
+    getDirectoryTemplatePath: function () {
         return this.getManutilConfig()['directoryTemplatePath'];
     },
-    getFilePathProperties: function () {
+    getFilePropertiesPath: function () {
         return this.getManutilConfig()['filePropertiesPath'];
     },
     getManutilConfig: function () {

@@ -5,11 +5,13 @@ let inputFileJarPath;
 let inputFilePropertiesPath;
 let inputFile;
 let callbackInputFile;
+let inputDirectoryTemplate;
 
 (function () {
     inputFile = $('<input type="file"/>');
     inputFileJarPath = $(document).find('#input-file-jar-path');
     inputFilePropertiesPath = $(document).find('#input-file-properties-path');
+    inputDirectoryTemplate = $(document).find('#input-directory-template');
 
     $(document).on('click', '#btn-select-jar-file', function () {
         openFileDialog(inputFileJarPath);
@@ -41,6 +43,10 @@ let callbackInputFile;
             });
         }
     });
+
+    inputFilePropertiesPath.val(common.getFilePropertiesPath());
+    inputFileJarPath.val(common.getFileJarPath());
+    inputDirectoryTemplate.val(common.getDirectoryTemplatePath());
 })();
 
 function openFileDialog(inputElement) {

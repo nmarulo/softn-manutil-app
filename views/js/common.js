@@ -45,15 +45,18 @@ module.exports = {
         $('#modal-information').modal('show');
     },
     getFilePathJar: function () {
-        return this.getManutilConfig()['filePathJar'];
+        return this.getManutilConfig()['fileJarPath'];
     },
     getTemplatePath: function () {
-        return this.getManutilConfig()['templatesPath'];
+        return this.getManutilConfig()['directoryTemplatePath'];
     },
     getFilePathProperties: function () {
-        return this.getManutilConfig()['filePathProperties'];
+        return this.getManutilConfig()['filePropertiesPath'];
     },
     getManutilConfig: function () {
-        return JSON.parse(fs.readFileSync(__dirname + '/../../softn-manutil-config.json', 'utf8'));
+        return JSON.parse(fs.readFileSync(this.getManutilConfigFilePath(), 'utf8'));
+    },
+    getManutilConfigFilePath: function () {
+        return __dirname + '/../../softn-manutil-config.json';
     }
 };

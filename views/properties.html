@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+        <link rel="stylesheet" href="css/style.css">
+        <title>softn-manutil-app</title>
+    </head>
+    <body>
+        <div class="d-flex flex-column w-100 h-100">
+            <header class="masthead">
+                <div class="mx-auto cover-container">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand" href="#">Manutil</a>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse"
+                                data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                                aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav mr-auto">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="index.html">Crear <span
+                                            class="sr-only">(current)</span></a>
+                                </li>
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="properties.html">Propiedades</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="configuration.html">Configuración</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </header>
+            <div class="cover">
+                <main role="main" class="mx-auto cover-container p-3 clearfix">
+                    <h1>
+                        Editar configuración
+                        <button id="btn-edit-properties" type="button" class="btn btn-success">Editar</button>
+                        <button id="btn-reload-properties" type="button" class="btn btn-danger"> Recargar</button>
+                    </h1>
+                    <form id="form-edit-properties" novalidate>
+                        <nav>
+                            <div class="nav nav-tabs" id="nav-tab-inputs" role="tablist">
+                                <a class="nav-item nav-link active" id="nav-general-tab" data-toggle="tab"
+                                   href="#nav-general" role="tab">General</a>
+                                <a class="nav-item nav-link" id="nav-optionals-tab" data-toggle="tab"
+                                   href="#nav-optionals" role="tab">Opcionales</a>
+                                <a class="nav-item nav-link" id="nav-modules-tab" data-toggle="tab"
+                                   href="#nav-modules" role="tab">Módulos</a>
+                            </div>
+                        </nav>
+                        <br/>
+                        <div class="tab-content" id="nav-tab-general-content">
+                            <div class="tab-pane fade show active" id="nav-general" role="tabpanel">
+                                <div class="form-group position-relative">
+                                    <label for="input-project-directory">Ruta del proyecto</label>
+                                    <input id="input-project-directory" class="form-control" type="text"
+                                           name="projectDirectory" placeholder="C:/directory/my-project" required>
+                                    <div class="invalid-tooltip">
+                                        Este campo es requerido.
+                                    </div>
+                                </div>
+                                <div class="form-group position-relative">
+                                    <label for="input-project-directory-packages">Directorio de los paquetes</label>
+                                    <input id="input-project-directory-packages" class="form-control" type="text"
+                                           name="projectDirectoryPackages"
+                                           placeholder="base-packages/package-one/package-t" required>
+                                    <div class="invalid-tooltip">
+                                        Este campo es requerido.
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <div class="position-relative">
+                                                <label for="input-project-main-packages">Paquete base</label>
+                                                <input id="input-project-main-packages" class="form-control" type="text"
+                                                       name="projectMainPackages" placeholder="red.softn"
+                                                       required>
+                                                <div class="invalid-tooltip">
+                                                    Este campo es requerido.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="position-relative">
+                                                <label for="input-project-class-type">Tipo de clase general</label>
+                                                <input id="input-project-class-type" class="form-control" type="text"
+                                                       name="projectClassType" placeholder="java"
+                                                       required>
+                                                <div class="invalid-tooltip">
+                                                    Este campo es requerido.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="position-relative">
+                                                <label for="input-project-package-separator">Separador de
+                                                    paquetes</label>
+                                                <input id="input-project-package-separator" class="form-control"
+                                                       type="text" name="projectPackageSeparator" placeholder="."
+                                                       required>
+                                                <div class="invalid-tooltip">
+                                                    Este campo es requerido.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="nav-optionals" role="tabpanel">
+                                <h4>Módulos</h4>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <div class="position-relative">
+                                                <label for="input-project-module-format-separator">Separador</label>
+                                                <input id="input-project-module-format-separator" class="form-control"
+                                                       type="text" name="projectModuleFormatSeparator" placeholder=":"
+                                                       value=":" required>
+                                                <div class="invalid-tooltip">
+                                                    Este campo es requerido.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="position-relative">
+                                                <label for="input-project-module-format-position-directory">Posición del
+                                                    directorio</label>
+                                                <input id="input-project-module-format-position-directory"
+                                                       class="form-control" type="number"
+                                                       name="projectModuleFormatPositionDirectory"
+                                                       value="0" placeholder="0" required>
+                                                <div class="invalid-tooltip">
+                                                    Este campo es requerido.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="position-relative">
+                                                <label for="input-project-module-format-position-package">Posición del
+                                                    paquete</label>
+                                                <input id="input-project-module-format-position-package"
+                                                       class="form-control" type="number"
+                                                       name="projectModuleFormatPositionPackage"
+                                                       value="1" placeholder="1" required>
+                                                <div class="invalid-tooltip">
+                                                    Este campo es requerido.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="nav-modules" role="tabpanel">
+                                <input id="input-project-modules" type="hidden" name="projectModules" value="[]"/>
+                                <div class="form-group">
+                                    <button id="btn-add-module" class="btn btn-primary" type="button"
+                                            data-toggle="modal" data-target="#modal-add-module">
+                                        Agregar modulo
+                                    </button>
+                                </div>
+                                <div id="container-accordion-modules" class="list-group accordion text-dark">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </main>
+            </div>
+            <div class="mt-auto">
+                <footer class="mx-auto cover-container p-3 clearfix">
+                    <div class="clearfix">
+                        <p class="float-left">
+                            https://github.com/nmarulo/softn-manutil-app
+                        </p>
+                        <p id="project-version" class="float-right">v</p>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        <div class="modal fade" id="modal-add-module" tabindex="-1" role="dialog" aria-hidden="true"
+             data-backdrop="false">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="btn btn-dark" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true" class="text-secondary font-weight-bold">&times;</span>
+                        </button>
+                        <h5 class="modal-title">Modulo</h5>
+                        <div class="d-flex justify-content-end">
+                            <button id="modal-btn-add" type="button" class="btn btn-success mr-3 d-none">
+                                Agregar
+                            </button>
+                            <button id="modal-btn-edit" type="button" class="btn btn-primary mr-3 d-none">
+                                Editar
+                            </button>
+                            <button id="modal-btn-delete" type="button" class="btn btn-danger d-none"
+                                    data-dismiss="modal">
+                                Eliminar
+                            </button>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <form id="modal-form-add-module">
+                            <nav>
+                                <div class="nav nav-tabs" id="nav-tab-add-module" role="tablist">
+                                    <a class="nav-item nav-link active" data-toggle="tab" href="#nav-add-module-general"
+                                       role="tab">General</a>
+                                    <a class="nav-item nav-link" data-toggle="tab" href="#nav-add-module-optional"
+                                       role="tab">Opcionales</a>
+                                    <a class="nav-item nav-link" data-toggle="tab" href="#nav-add-module-data"
+                                       role="tab">Datos</a>
+                                </div>
+                            </nav>
+                            <br/>
+                            <div class="tab-content" id="nav-tab-content-add-module">
+                                <input id="input-project-module-id" type="hidden" name="projectModuleId"/>
+                                <div class="tab-pane fade show active" id="nav-add-module-general" role="tabpanel">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group position-relative">
+                                                <label for="input-project-module-name">Nombre</label>
+                                                <input id="input-project-module-name" class="form-control"
+                                                       type="text" name="projectModuleName"
+                                                       placeholder="module-a" required>
+                                                <div class="invalid-tooltip">
+                                                    Este campo es requerido.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group position-relative">
+                                                <label for="input-project-class-template-name">Nombre de la
+                                                    clase</label>
+                                                <input id="input-project-class-template-name" class="form-control"
+                                                       type="text" name="projectClassesTemplateName"
+                                                       placeholder="Red#{className}SoftNModuleA" required>
+                                                <div class="invalid-tooltip">
+                                                    Este campo es requerido.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group position-relative">
+                                        <label for="input-project-module-package">Paquete</label>
+                                        <input id="input-project-module-package" class="form-control" type="text"
+                                               name="projectModulePackage" placeholder="package.one.two.t"
+                                               required>
+                                        <div class="invalid-tooltip">
+                                            Este campo es requerido.
+                                        </div>
+                                    </div>
+                                    <div class="form-group position-relative">
+                                        <label for="input-project-class-template-path">Ruta de la plantilla</label>
+                                        <input id="input-project-class-template-path" class="form-control" type="text"
+                                               name="projectClassesTemplatePath"
+                                               placeholder="C:/softn-manutil-app/templates/ClassTemplate.txt" required>
+                                        <div class="invalid-tooltip">
+                                            Este campo es requerido.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="nav-add-module-optional" role="tabpanel">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label for="input-project-class-template-type">Tipo</label>
+                                                <input id="input-project-class-template-type" class="form-control"
+                                                       type="text" name="projectClassesTemplateType" placeholder="java">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="nav-add-module-data" role="tabpanel">
+                                    <input id="input-project-classes-template-replace" type="hidden"
+                                           name="projectClassesTemplateReplace"/>
+                                    <div class="form-group">
+                                        <button id="modal-btn-replace-add" type="button" class="btn btn-primary">
+                                            Nuevo
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="modal-information" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Información</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <pre class="custom-pre"></pre>
+                        <div class="d-flex justify-content-center">
+                            <button type="button" class="btn btn-dark" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="modal-load-info" tabindex="-1" role="dialog" aria-hidden="true"
+             data-backdrop="false">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-body text-center">
+                        Cargando propiedades...
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                                 aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Optional JavaScript -->
+        <script>window.$ = window.jQuery = require('jquery');</script>
+        <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
+        <script>require('./js/properties.js');</script>
+    </body>
+</html>

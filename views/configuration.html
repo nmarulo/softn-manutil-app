@@ -22,13 +22,14 @@
                         </button>
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav mr-auto">
-                                <li class="nav-item active">
-                                    <a class="nav-link" href="index.html">Crear <span class="sr-only">(current)</span></a>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="index.html">Crear <span
+                                            class="sr-only">(current)</span></a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="properties.html">Propiedades</a>
                                 </li>
-                                <li class="nav-item">
+                                <li class="nav-item active">
                                     <a class="nav-link" href="configuration.html">Configuración</a>
                                 </li>
                             </ul>
@@ -38,30 +39,49 @@
             </header>
             <div class="mb-auto cover">
                 <main role="main" class="mx-auto cover-container p-3 clearfix">
-                    <h1>Crear ficheros</h1>
-                    <form id="form-create-files" novalidate>
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="position-relative">
-                                        <label for="input-name-class">Nombre de la clase:</label>
-                                        <input id="input-name-class" class="form-control" type="text"
-                                               name="inputClassName" placeholder="MyNameClass" required>
-                                        <div class="invalid-tooltip">
-                                            Este campo es requerido.
-                                        </div>
-                                    </div>
+                    <h1>Configuración</h1>
+                    <form id="form-edit-configuration" novalidate>
+                        <div class="form-group position-relative">
+                            <label for="input-file-jar-path">Fichero ".jar"</label>
+                            <div class="input-group mb-3">
+                                <input id="input-file-jar-path" class="form-control" type="text"
+                                       name="fileJarPath" placeholder="C:\manutil-cli\manutil.jar" required>
+                                <div class="invalid-tooltip">
+                                    Este campo es requerido.
                                 </div>
-                                <div class="col-sm-6">
-                                    <label for="input-name-module">Seleccione el/los modulo(s) (opcional):</label>
-                                    <select id="input-name-module" class="custom-select"
-                                            name="inputModuleName" multiple>
-                                        <option value="" selected>Todos</option>
-                                    </select>
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="button" id="btn-select-jar-file">
+                                        Seleccionar
+                                    </button>
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-success">Crear</button>
+                        <div class="form-group position-relative">
+                            <label for="input-file-properties-path">Fichero "properties"</label>
+                            <div class="input-group mb-3">
+                                <input id="input-file-properties-path" class="form-control"
+                                       type="text" name="filePropertiesPath"
+                                       placeholder="C:\manutil-cli\master.properties" required>
+                                <div class="invalid-tooltip">
+                                    Este campo es requerido.
+                                </div>
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="button" id="btn-select-properties-file">
+                                        Seleccionar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group position-relative">
+                            <label for="input-directory-template">Directorio de plantillas</label>
+                            <input id="input-directory-template" class="form-control"
+                                   type="text" name="directoryTemplatePath" placeholder="C:\manutil-cli\template\"
+                                   required>
+                            <div class="invalid-tooltip">
+                                Este campo es requerido.
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success">Editar</button>
                     </form>
                 </main>
             </div>
@@ -94,23 +114,9 @@
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="modal-file-jar-properties" tabindex="-1" role="dialog"
-             aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <p>No se encontraron los ficheros <code>.jar</code> y <code>.properties</code>.</p>
-                        <p>Establezca sus rutas manualmente.</p>
-                        <div class="d-flex justify-content-center">
-                            <button type="button" class="btn btn-dark" data-dismiss="modal">Cerrar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
         <!-- Optional JavaScript -->
         <script>window.$ = window.jQuery = require('jquery');</script>
         <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
-        <script>require('./js/create-file.js');</script>
+        <script>require('./js/configuration.js');</script>
     </body>
 </html>
